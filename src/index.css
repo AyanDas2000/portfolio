@@ -1,6 +1,5 @@
 @import 'tailwindcss';
 
-/* ---- Theme tokens (Tailwind v4). Colors reference CSS vars so they react to data-theme. ---- */
 @theme inline {
   --color-bg: var(--bg);
   --color-surface: var(--surface);
@@ -10,152 +9,121 @@
   --color-faint: var(--faint);
   --color-line: var(--line);
   --color-accent: var(--accent);
-  --color-accent-dim: var(--accent-dim);
   --color-accent2: var(--accent2);
+  --color-accent3: var(--accent3);
   --color-led: var(--led);
 
   --font-display: 'Space Grotesk', ui-sans-serif, system-ui, sans-serif;
   --font-mono: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace;
 }
 
-/* Light (default) — warm paper, sunset accent. Bright and friendly. */
+/* Light (default) — bright, warm-white, vibrant. */
 :root {
-  --bg: #fbf6ec;
-  --surface: #f4ecdd;
-  --surface2: #ece1cd;
-  --text: #2a2620;
-  --muted: #6a6154;
-  --faint: #a99e8b;
-  --line: #e6dbc8;
-  --accent: #d9631f;
-  --accent-dim: #a94c13;
-  --accent2: #2c9e93;
-  --led: #2e9e5b;
+  --bg: #fffdf8;
+  --surface: #ffffff;
+  --surface2: #fff4e4;
+  --text: #1b1712;
+  --muted: #6f6555;
+  --faint: #a99d89;
+  --line: #efe6d6;
+  --accent: #ff6a2b;
+  --accent2: #10b3a3;
+  --accent3: #ffb020;
+  --led: #17c26a;
+  --grad: linear-gradient(115deg, #ff6a2b 0%, #ffb020 100%);
+  --grad2: linear-gradient(115deg, #10b3a3 0%, #3ad6c0 100%);
 }
 
-/* Dark — warm brown-black (not cold near-black), for the toggle */
+/* Dark — warm, still lively (toggle) */
 :root[data-theme='dark'] {
-  --bg: #191411;
-  --surface: #221a15;
-  --surface2: #2c221b;
-  --text: #f1e8db;
-  --muted: #a89c8b;
+  --bg: #17120e;
+  --surface: #211a14;
+  --surface2: #2b211a;
+  --text: #f5ede0;
+  --muted: #b4a795;
   --faint: #6f6455;
-  --line: #33291f;
-  --accent: #f5904a;
-  --accent-dim: #c06a2e;
-  --accent2: #4cc5b8;
-  --led: #5bd98a;
+  --line: #352a20;
+  --accent: #ff8a45;
+  --accent2: #2fd4bf;
+  --accent3: #ffc24b;
+  --led: #4ade80;
+  --grad: linear-gradient(115deg, #ff8a45 0%, #ffc24b 100%);
+  --grad2: linear-gradient(115deg, #2fd4bf 0%, #59e6d4 100%);
 }
 
 html {
   scroll-behavior: smooth;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-rendering: optimizeLegibility;
 }
-
 body {
   margin: 0;
   background: var(--bg);
   color: var(--text);
   font-family: var(--font-display);
-  /* soft warm glow, no cold grid */
-  background-image:
-    radial-gradient(
-      90% 60% at 88% -10%,
-      color-mix(in srgb, var(--accent) 16%, transparent),
-      transparent 55%
-    ),
-    radial-gradient(
-      70% 50% at 5% 8%,
-      color-mix(in srgb, var(--accent2) 10%, transparent),
-      transparent 60%
-    );
-  background-attachment: fixed;
+  font-size: 17px;
+  line-height: 1.6;
+  overflow-x: hidden;
 }
 
 ::selection {
-  background: color-mix(in srgb, var(--accent) 28%, transparent);
-  color: var(--text);
+  background: color-mix(in srgb, var(--accent) 30%, transparent);
 }
-
 :focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 3px;
-  border-radius: 2px;
+  border-radius: 3px;
 }
-
 * {
   scrollbar-width: thin;
   scrollbar-color: var(--line) transparent;
 }
 
-@keyframes led-pulse {
-  0%,
-  100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.55;
-  }
+/* helpers */
+.grad-text {
+  background: var(--grad);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
-@keyframes scan {
-  0% {
-    transform: translateY(-120%);
-    opacity: 0;
-  }
-  12% {
-    opacity: 1;
-  }
-  88% {
-    opacity: 1;
-  }
-  100% {
-    transform: translateY(2200%);
-    opacity: 0;
-  }
-}
-@keyframes caret {
-  0%,
-  49% {
-    opacity: 1;
-  }
-  50%,
-  100% {
-    opacity: 0;
-  }
-}
-@keyframes float-slow {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-6px);
-  }
+.blob {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(60px);
+  opacity: 0.5;
+  pointer-events: none;
+  z-index: 0;
 }
 
-.led {
-  animation: led-pulse 2.4s ease-in-out infinite;
+@keyframes float-a {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(30px, -40px) scale(1.08); }
 }
-.caret {
-  animation: caret 1.05s step-end infinite;
+@keyframes float-b {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(-40px, 30px) scale(1.12); }
 }
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+@keyframes led-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.float-a { animation: float-a 14s ease-in-out infinite; }
+.float-b { animation: float-b 18s ease-in-out infinite; }
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee 26s linear infinite;
+}
+.marquee-wrap:hover .marquee-track { animation-play-state: paused; }
+.led { animation: led-pulse 2.2s ease-in-out infinite; }
 
 @media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
-  .led,
-  .caret,
-  .scanline,
-  [style*='float-slow'] {
-    animation: none !important;
-  }
-  *,
-  *::before,
-  *::after {
-    transition-duration: 0.01ms !important;
-  }
+  html { scroll-behavior: auto; }
+  .float-a, .float-b, .marquee-track, .led { animation: none !important; }
+  *, *::before, *::after { transition-duration: 0.01ms !important; }
 }
