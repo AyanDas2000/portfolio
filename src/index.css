@@ -111,6 +111,11 @@ body {
   0%, 100% { opacity: 1; }
   50% { opacity: 0.5; }
 }
+@keyframes spin-cw { to { transform: rotate(360deg); } }
+@keyframes orbit {
+  from { transform: rotate(0) translateX(var(--r, 90px)) rotate(0); }
+  to { transform: rotate(360deg) translateX(var(--r, 90px)) rotate(-360deg); }
+}
 
 .float-a { animation: float-a 14s ease-in-out infinite; }
 .float-b { animation: float-b 18s ease-in-out infinite; }
@@ -121,9 +126,14 @@ body {
 }
 .marquee-wrap:hover .marquee-track { animation-play-state: paused; }
 .led { animation: led-pulse 2.2s ease-in-out infinite; }
+.spin-slow { animation: spin-cw 9s linear infinite; }
+.spin-rev { animation: spin-cw 14s linear infinite reverse; }
+.orbit { animation: orbit 7s linear infinite; }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  .float-a, .float-b, .marquee-track, .led { animation: none !important; }
+  .float-a, .float-b, .marquee-track, .led, .spin-slow, .spin-rev, .orbit {
+    animation: none !important;
+  }
   *, *::before, *::after { transition-duration: 0.01ms !important; }
 }
