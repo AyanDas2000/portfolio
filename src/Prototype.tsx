@@ -196,6 +196,18 @@ function Variant({ kind }: { kind: Kind }) {
         }}
       />
 
+      {/* paper grain texture (light only) */}
+      {kind === 'light' && (
+        <div
+          className="pointer-events-none absolute inset-0 opacity-[0.4] mix-blend-multiply"
+          style={{
+            backgroundImage:
+              "url(\"data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='160'%20height='160'%3E%3Cfilter%20id='n'%3E%3CfeTurbulence%20type='fractalNoise'%20baseFrequency='0.9'%20numOctaves='2'%20stitchTiles='stitch'/%3E%3CfeColorMatrix%20type='saturate'%20values='0'/%3E%3C/filter%3E%3Crect%20width='100%25'%20height='100%25'%20filter='url(%23n)'%20opacity='0.6'/%3E%3C/svg%3E\")",
+            backgroundSize: '160px 160px',
+          }}
+        />
+      )}
+
       {/* label */}
       <div className="absolute left-6 top-6 z-20 rounded-full border px-3 py-1 font-mono text-[11px] tracking-wider"
         style={{ borderColor: 'var(--line)', color: 'var(--muted)', background: 'var(--surface)' }}>
