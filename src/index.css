@@ -17,7 +17,7 @@
   --font-mono: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace;
 }
 
-/* Light (default) — bright, warm-white, vibrant. */
+/* Light (default): bright, warm white, Jiraiya neutrals + Naruto orange. */
 :root {
   --bg: #fcfbf9;
   --surface: #ffffff;
@@ -34,7 +34,7 @@
   --grad2: linear-gradient(115deg, #3b82f6 0%, #60a5fa 100%);
 }
 
-/* Dark — warm, still lively (toggle) */
+/* Dark: warm, still lively (toggle) */
 :root[data-theme='dark'] {
   --bg: #17120e;
   --surface: #211a14;
