@@ -107,6 +107,21 @@ function ChakraEdge({ kind }: { kind: Kind }) {
   )
 }
 
+const CHIPS: Record<Kind, { label: string; c: string }[]> = {
+  dark: [
+    { label: 'n8n', c: '#37C6E0' },
+    { label: 'Python', c: '#8B7CF6' },
+    { label: 'AWS', c: '#F5A15C' },
+    { label: 'LLMs', c: '#5BD98A' },
+  ],
+  light: [
+    { label: 'n8n', c: '#2E6FB0' },
+    { label: 'Python', c: '#6D4FB0' },
+    { label: 'AWS', c: '#C0563A' },
+    { label: 'LLMs', c: '#1E8E7E' },
+  ],
+}
+
 function NodeCard({ kind }: { kind: Kind }) {
   return (
     <motion.div
@@ -114,43 +129,70 @@ function NodeCard({ kind }: { kind: Kind }) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.7, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
-      className="relative w-72 rounded-2xl border p-6 backdrop-blur-md"
-      style={{
-        borderColor: 'var(--line)',
-        background:
-          kind === 'dark' ? 'rgba(18,23,34,0.6)' : 'rgba(255,255,255,0.7)',
-        boxShadow:
-          kind === 'dark'
-            ? '0 30px 80px -40px rgba(0,0,0,0.9), inset 0 1px 0 rgba(255,255,255,0.06)'
-            : '0 30px 60px -40px rgba(40,30,10,0.4)',
-      }}
+      className="relative w-72"
     >
-      <div className="flex items-center justify-between font-mono text-[11px] tracking-wider" style={{ color: 'var(--muted)' }}>
-        <span className="inline-flex items-center gap-1.5">
-          <span className="inline-block h-1.5 w-1.5 rounded-full" style={{ background: kind === 'dark' ? '#5BD98A' : '#2E9E5B' }} />
-          LIVE
-        </span>
-        <span>OUTPILOT.AI</span>
-      </div>
-      <h3 className="mt-3 text-xl font-semibold" style={{ color: 'var(--text)' }}>
-        AI Outreach Platform
-      </h3>
-      <p className="mt-1 font-mono text-[12px]" style={{ color: 'var(--accent)' }}>
-        campaign prep: 2 weeks to minutes
-      </p>
-      <div className="mt-4 flex flex-wrap gap-1.5">
-        {['n8n', 'Python', 'AWS', 'LLMs'].map((s) => (
-          <span
-            key={s}
-            className="rounded-md px-2 py-0.5 font-mono text-[11px]"
-            style={{ background: 'var(--surface2)', color: 'var(--muted)' }}
-          >
-            {s}
+      {/* soft color glow behind the card */}
+      <div
+        className="pointer-events-none absolute -inset-4 -z-10 rounded-[28px] opacity-70 blur-2xl"
+        style={{
+          background:
+            kind === 'dark'
+              ? 'linear-gradient(135deg, rgba(55,198,224,0.35), rgba(139,124,246,0.30))'
+              : 'linear-gradient(135deg, rgba(59,91,169,0.22), rgba(224,102,60,0.20))',
+        }}
+      />
+      <div
+        className="relative overflow-hidden rounded-2xl border p-6 backdrop-blur-md"
+        style={{
+          borderColor: 'var(--line)',
+          background: kind === 'dark' ? 'rgba(18,23,34,0.66)' : 'rgba(255,255,255,0.72)',
+          boxShadow:
+            kind === 'dark'
+              ? '0 30px 80px -40px rgba(0,0,0,0.9), inset 0 1px 0 rgba(255,255,255,0.06)'
+              : '0 30px 60px -40px rgba(40,30,10,0.35)',
+        }}
+      >
+        {/* gradient accent bar */}
+        <div
+          className="absolute inset-x-0 top-0 h-[3px]"
+          style={{
+            background:
+              kind === 'dark'
+                ? 'linear-gradient(90deg, #37C6E0, #8B7CF6, #F5A15C)'
+                : 'linear-gradient(90deg, #2E6FB0, #6D4FB0, #C0563A)',
+          }}
+        />
+        <div className="flex items-center justify-between font-mono text-[11px] tracking-wider" style={{ color: 'var(--muted)' }}>
+          <span className="inline-flex items-center gap-1.5">
+            <span className="inline-block h-1.5 w-1.5 rounded-full" style={{ background: kind === 'dark' ? '#5BD98A' : '#2E9E5B' }} />
+            LIVE
           </span>
-        ))}
-      </div>
-      <div className="mt-4 font-mono text-[11px]" style={{ color: 'var(--accent)' }}>
-        open file →
+          <span>OUTPILOT.AI</span>
+        </div>
+        <h3 className="mt-3 text-xl font-semibold" style={{ color: 'var(--text)' }}>
+          AI Outreach Platform
+        </h3>
+        <p className="mt-1 font-mono text-[12px]" style={{ color: 'var(--accent)' }}>
+          campaign prep: 2 weeks to minutes
+        </p>
+        <div className="mt-4 flex flex-wrap gap-1.5">
+          {CHIPS[kind].map((s) => (
+            <span
+              key={s.label}
+              className="rounded-md border px-2 py-0.5 font-mono text-[11px]"
+              style={{
+                background: `${s.c}1F`,
+                borderColor: `${s.c}44`,
+                color: kind === 'dark' ? s.c : s.c,
+              }}
+            >
+              {s.label}
+            </span>
+          ))}
+        </div>
+        <div className="mt-4 font-mono text-[11px]" style={{ color: 'var(--accent)' }}>
+          open file →
+        </div>
       </div>
     </motion.div>
   )
@@ -175,14 +217,23 @@ function Variant({ kind }: { kind: Kind }) {
     >
       <div className="absolute inset-0" style={{ background: 'var(--bg)' }} />
 
-      {/* ambient glow */}
+      {/* ambient color washes */}
       <div
         className="pointer-events-none absolute -right-40 -top-40 h-[36rem] w-[36rem] rounded-full blur-[120px]"
         style={{
           background:
             kind === 'dark'
-              ? 'radial-gradient(circle, rgba(55,198,224,0.22), transparent 70%)'
-              : 'radial-gradient(circle, rgba(39,64,107,0.14), transparent 70%)',
+              ? 'radial-gradient(circle, rgba(55,198,224,0.24), transparent 70%)'
+              : 'radial-gradient(circle, rgba(59,91,169,0.20), transparent 70%)',
+        }}
+      />
+      <div
+        className="pointer-events-none absolute -bottom-40 -left-40 h-[34rem] w-[34rem] rounded-full blur-[130px]"
+        style={{
+          background:
+            kind === 'dark'
+              ? 'radial-gradient(circle, rgba(139,124,246,0.20), transparent 70%)'
+              : 'radial-gradient(circle, rgba(224,102,60,0.18), transparent 70%)',
         }}
       />
       {/* cursor-bound glow */}
@@ -220,7 +271,7 @@ function Variant({ kind }: { kind: Kind }) {
           <motion.p
             initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="font-mono text-sm" style={{ color: 'var(--muted)' }}
+            className="font-mono text-sm font-medium" style={{ color: 'var(--accent)' }}
           >
             Hey, I'm Ayan 👋
           </motion.p>
