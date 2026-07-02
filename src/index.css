@@ -19,19 +19,19 @@
 
 /* Light (default) — bright, warm-white, vibrant. */
 :root {
-  --bg: #fffdf8;
+  --bg: #fcfbf9;
   --surface: #ffffff;
-  --surface2: #fff4e4;
-  --text: #1b1712;
-  --muted: #6f6555;
-  --faint: #a99d89;
-  --line: #efe6d6;
+  --surface2: #f3f2ee;
+  --text: #1b1a17;
+  --muted: #6a675f;
+  --faint: #a6a29a;
+  --line: #e9e6df;
   --accent: #ff6a2b;
-  --accent2: #10b3a3;
+  --accent2: #3b82f6;
   --accent3: #ffb020;
   --led: #17c26a;
   --grad: linear-gradient(115deg, #ff6a2b 0%, #ffb020 100%);
-  --grad2: linear-gradient(115deg, #10b3a3 0%, #3ad6c0 100%);
+  --grad2: linear-gradient(115deg, #3b82f6 0%, #60a5fa 100%);
 }
 
 /* Dark — warm, still lively (toggle) */
@@ -44,11 +44,11 @@
   --faint: #6f6455;
   --line: #352a20;
   --accent: #ff8a45;
-  --accent2: #2fd4bf;
+  --accent2: #60a5fa;
   --accent3: #ffc24b;
   --led: #4ade80;
   --grad: linear-gradient(115deg, #ff8a45 0%, #ffc24b 100%);
-  --grad2: linear-gradient(115deg, #2fd4bf 0%, #59e6d4 100%);
+  --grad2: linear-gradient(115deg, #60a5fa 0%, #93c5fd 100%);
 }
 
 html {
