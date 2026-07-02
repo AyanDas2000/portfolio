@@ -1,0 +1,179 @@
+@import 'tailwindcss';
+
+/* ---- Theme tokens (Tailwind v4). Colors reference CSS vars so they react to data-theme. ---- */
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface2: var(--surface2);
+  --color-text: var(--text);
+  --color-muted: var(--muted);
+  --color-faint: var(--faint);
+  --color-line: var(--line);
+  --color-accent: var(--accent);
+  --color-accent-dim: var(--accent-dim);
+  --color-led: var(--led);
+
+  --font-display: 'Space Grotesk', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace;
+}
+
+/* Dark (default) — instrument panel at dusk */
+:root {
+  --bg: #0e0d0b;
+  --surface: #17150f;
+  --surface2: #1f1c15;
+  --text: #ece6d9;
+  --muted: #948d80;
+  --faint: #635d53;
+  --line: #2a271f;
+  --accent: #ffa23a;
+  --accent-dim: #b9762a;
+  --led: #5bd98a;
+}
+
+/* Light — warm paper */
+:root[data-theme='light'] {
+  --bg: #f3eee3;
+  --surface: #ece5d7;
+  --surface2: #e4dccb;
+  --text: #211e18;
+  --muted: #5f5849;
+  --faint: #8d8676;
+  --line: #d8cfbc;
+  --accent: #b5661a;
+  --accent-dim: #9a5713;
+  --led: #2e9e5b;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-display);
+  /* faint instrument grid + top glow */
+  background-image:
+    radial-gradient(
+      120% 90% at 82% -10%,
+      color-mix(in srgb, var(--accent) 9%, transparent),
+      transparent 60%
+    ),
+    linear-gradient(var(--line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--line) 1px, transparent 1px);
+  background-size:
+    100% 100%,
+    46px 46px,
+    46px 46px;
+  background-position:
+    0 0,
+    0 0,
+    0 0;
+}
+:root[data-theme='light'] body {
+  /* soften the grid on light so it doesn't get noisy */
+  background-image:
+    radial-gradient(
+      120% 90% at 82% -10%,
+      color-mix(in srgb, var(--accent) 7%, transparent),
+      transparent 60%
+    ),
+    linear-gradient(
+      color-mix(in srgb, var(--line) 55%, transparent) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      color-mix(in srgb, var(--line) 55%, transparent) 1px,
+      transparent 1px
+    );
+  background-size:
+    100% 100%,
+    46px 46px,
+    46px 46px;
+}
+
+::selection {
+  background: color-mix(in srgb, var(--accent) 30%, transparent);
+  color: var(--text);
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* Custom scrollbar (subtle) */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--line) transparent;
+}
+
+@keyframes led-pulse {
+  0%,
+  100% {
+    opacity: 1;
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--led) 60%, transparent);
+  }
+  50% {
+    opacity: 0.65;
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--led) 0%, transparent);
+  }
+}
+
+@keyframes scan {
+  0% {
+    transform: translateY(-120%);
+    opacity: 0;
+  }
+  12% {
+    opacity: 1;
+  }
+  88% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(2200%);
+    opacity: 0;
+  }
+}
+
+@keyframes caret {
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+
+.led {
+  animation: led-pulse 2.4s ease-in-out infinite;
+}
+.caret {
+  animation: caret 1.05s step-end infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .led,
+  .caret,
+  .scanline {
+    animation: none !important;
+  }
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+  }
+}
