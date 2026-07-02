@@ -23,7 +23,7 @@ export const interests = [
 ]
 
 export const links = {
-  email: 'hello@example.com', // TODO: real email
+  email: 'ayan11112000@gmail.com',
   linkedin: 'https://www.linkedin.com/in/ayan-das-ad103/',
   x: 'https://x.com/AyanDas18189209',
 }

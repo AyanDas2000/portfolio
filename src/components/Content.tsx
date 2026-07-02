@@ -18,7 +18,7 @@ function Photo() {
   const [broken, setBroken] = useState(false)
   return !broken ? (
     <img
-      src="/ayan.jpg"
+      src="/ayan.png"
       alt="Ayan Das"
       width={320}
       height={320}
@@ -27,7 +27,7 @@ function Photo() {
     />
   ) : (
     <div className="flex h-40 w-40 shrink-0 items-center justify-center rounded-2xl border border-line bg-surface2 text-center font-mono text-[11px] text-faint sm:h-48 sm:w-48">
-      add public/ayan.jpg
+      add public/ayan.png
     </div>
   )
 }
