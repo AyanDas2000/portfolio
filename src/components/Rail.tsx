@@ -1,4 +1,4 @@
-import { profile, links, nav } from '../data'
+import { profile, links, nav, interests } from '../data'
 import { cn, useTheme } from '../lib'
 
 function scrollTo(id: string) {
@@ -10,21 +10,36 @@ export function Rail({ active }: { active: string }) {
   return (
     <header className="flex flex-col lg:sticky lg:top-0 lg:h-screen lg:max-h-screen lg:py-16 lg:pr-10">
       <div className="flex-1">
-        <p className="font-mono text-xs tracking-[0.2em] text-accent">
-          {profile.role.toUpperCase()}
-        </p>
-        <h1 className="mt-4 font-display text-5xl font-semibold leading-none tracking-tight text-text sm:text-6xl">
+        <p className="font-mono text-sm text-accent">Hey, I am</p>
+        <h1 className="mt-1 font-display text-5xl font-semibold leading-none tracking-tight text-text sm:text-6xl">
           {profile.name}
         </h1>
-        <p className="mt-5 max-w-md font-display text-xl leading-snug text-text/90">
+        <p className="mt-3 font-mono text-xs tracking-[0.18em] text-muted">
+          {profile.role.toUpperCase()}
+        </p>
+
+        <p className="mt-6 max-w-md font-display text-xl leading-snug text-text">
           {profile.tagline}
         </p>
         <p className="mt-4 max-w-md text-[15px] leading-relaxed text-muted">
           {profile.intro}
         </p>
 
+        {/* interest chips */}
+        <div className="mt-6 flex flex-wrap gap-2">
+          {interests.map((it) => (
+            <span
+              key={it.label}
+              className="inline-flex items-center gap-1.5 rounded-full border border-line bg-surface/70 px-3 py-1 text-[13px] text-muted"
+            >
+              <span aria-hidden>{it.emoji}</span>
+              {it.label}
+            </span>
+          ))}
+        </div>
+
         {/* status pill */}
-        <div className="mt-6 inline-flex items-center gap-2.5 rounded-full border border-line bg-surface/60 px-3.5 py-1.5">
+        <div className="mt-5 inline-flex items-center gap-2.5 rounded-full border border-accent/30 bg-accent/8 px-3.5 py-1.5">
           <span className="led inline-block h-2 w-2 rounded-full bg-led" />
           <span className="font-mono text-[11px] tracking-wide text-muted">
             {profile.status}
@@ -46,7 +61,9 @@ export function Rail({ active }: { active: string }) {
                     <span
                       className={cn(
                         'h-px transition-all duration-300',
-                        on ? 'w-10 bg-accent' : 'w-5 bg-faint group-hover:w-8 group-hover:bg-muted',
+                        on
+                          ? 'w-10 bg-accent'
+                          : 'w-5 bg-faint group-hover:w-8 group-hover:bg-muted',
                       )}
                     />
                     <span

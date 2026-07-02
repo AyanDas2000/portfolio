@@ -30,7 +30,7 @@ export function FrameDecoder() {
   }, [full, reduce])
 
   return (
-    <div className="relative overflow-hidden rounded-md border border-line bg-surface/80 backdrop-blur-sm shadow-[0_20px_60px_-30px_rgba(0,0,0,0.8)]">
+    <div className="relative overflow-hidden rounded-lg border border-line bg-surface/70 backdrop-blur-sm shadow-[0_24px_50px_-32px_rgba(120,80,20,0.45)]">
       {/* header bar */}
       <div className="flex items-center justify-between border-b border-line px-4 py-2.5 font-mono text-[11px] tracking-wider text-muted">
         <span>

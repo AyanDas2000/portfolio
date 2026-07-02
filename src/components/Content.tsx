@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { work, approach, about, alsoBuilt, links, profile } from '../data'
+import { work, approach, beyond, about, alsoBuilt, links, profile } from '../data'
 import { Reveal } from '../lib'
 
 function SectionLabel({ children }: { children: string }) {
@@ -121,6 +121,31 @@ export function Content() {
               <div className="h-full rounded-md border border-line bg-surface/40 p-5">
                 <h3 className="font-mono text-sm text-accent">{g.title}</h3>
                 <p className="mt-3 text-[14px] leading-relaxed text-muted">{g.body}</p>
+              </div>
+            </Reveal>
+          ))}
+        </div>
+      </section>
+
+      {/* BEYOND WORK */}
+      <section id="beyond" className="mt-24 scroll-mt-8">
+        <SectionLabel>Beyond work</SectionLabel>
+        <Reveal>
+          <p className="max-w-2xl font-display text-xl leading-relaxed text-text">
+            {beyond.lead}
+          </p>
+        </Reveal>
+        <div className="mt-8 grid gap-4 sm:grid-cols-2">
+          {beyond.items.map((it, i) => (
+            <Reveal key={it.title} delay={i * 0.07}>
+              <div className="flex h-full gap-4 rounded-lg border border-line bg-surface/50 p-5 transition-colors hover:border-accent/40">
+                <span className="text-2xl leading-none" aria-hidden>
+                  {it.emoji}
+                </span>
+                <div>
+                  <h3 className="font-display text-lg font-medium text-text">{it.title}</h3>
+                  <p className="mt-1.5 text-[14px] leading-relaxed text-muted">{it.body}</p>
+                </div>
               </div>
             </Reveal>
           ))}

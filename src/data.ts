@@ -1,15 +1,23 @@
 // All site copy lives here so it is easy to edit in one place.
-// Style: plain, first person, no em dashes.
+// Style: plain, warm, first person, no em dashes.
 
 export const profile = {
   name: 'Ayan Das',
+  greeting: 'Hey, I am Ayan.',
   role: 'Automation & AI Engineer',
   tagline: 'I build working systems fast, whatever the stack.',
   intro:
-    'I take messy problems and turn them into systems that actually run. Over the last two years I built the backend of a productized AI outreach platform from scratch, reverse engineered my motorcycle dashboard, and built my own voice assistant.',
+    'I take messy problems and turn them into things that actually run. Over the last two years I built the backend of a productized AI outreach platform from scratch, automated operations for e-commerce brands, and a few things just for fun, like a companion app for my motorcycle and my own voice assistant.',
   status: 'Open to remote roles (EU / global)',
   location: 'India (IST), comfortable working European hours',
 }
+
+export const interests = [
+  { emoji: '🏍️', label: 'Riding' },
+  { emoji: '✈️', label: 'Travel' },
+  { emoji: '📷', label: 'Photography' },
+  { emoji: '🍥', label: 'Naruto' },
+]
 
 export const links = {
   // TODO: swap in the email you want shown publicly
@@ -22,6 +30,7 @@ export const links = {
 export const nav = [
   { id: 'work', label: 'Selected work' },
   { id: 'approach', label: 'How I work' },
+  { id: 'beyond', label: 'Beyond work' },
   { id: 'about', label: 'About' },
   { id: 'contact', label: 'Contact' },
 ]
@@ -71,7 +80,7 @@ export const work: Work[] = [
     title: 'Motorcycle Dashboard Companion App',
     meta: 'Personal build',
     year: '2026',
-    body: 'Reverse engineered the Bluetooth protocol of my motorcycle dashboard from the decompiled app, then built an Android companion that pushes navigation and music to the cluster and lets me control music from the bike own buttons.',
+    body: 'Reverse engineered the Bluetooth protocol of my motorcycle dashboard from the decompiled app, then built an Android companion that pushes navigation and music to the cluster and lets me control music from the bike own buttons. This one started as a weekend curiosity and turned into a proper project.',
     stack: ['Kotlin', 'Android', 'BLE'],
     personal: true,
   },
@@ -108,7 +117,33 @@ export const approach = {
   ],
 }
 
+export const beyond = {
+  lead: 'I am not glued to a keyboard all the time. Most of what recharges me happens away from the screen, and honestly it feeds back into the work.',
+  items: [
+    {
+      emoji: '🏍️',
+      title: 'Riding',
+      body: 'Weekends usually mean my bike and an open road. It is also what got me curious enough to reverse engineer my dashboard for fun.',
+    },
+    {
+      emoji: '✈️',
+      title: 'Travel',
+      body: 'I like going to new places and figuring them out slowly. Fewer checklists, more wandering.',
+    },
+    {
+      emoji: '📷',
+      title: 'Photography',
+      body: 'I shoot a lot on my phone, mostly to hold on to the memories from the road and the trips.',
+    },
+    {
+      emoji: '🍥',
+      title: 'Anime',
+      body: 'A long running Naruto fan. Good company while a build is running in the background.',
+    },
+  ],
+}
+
 export const about = [
-  'I am Ayan, an automation and AI engineer based in India. I started a little under two years ago writing guides on business tools, and taught myself to build from there. Since then I have built the backend of a productized AI outreach platform, automated operations for e-commerce brands, and a handful of things just because I wanted to see if I could, like reverse engineering my motorcycle dashboard and building my own voice assistant.',
-  'Most of what I know is self taught and picked up on the job. I work fastest when I am handed a messy problem and a blank page.',
+  'I am Ayan, an automation and AI engineer based in India. I started a little under two years ago writing guides on business tools, and taught myself to build from there. Since then I have built the backend of a productized AI outreach platform, automated operations for e-commerce brands, and a handful of things just because I wanted to see if I could.',
+  'Most of what I know is self taught and picked up on the job. I work fastest when I am handed a messy problem and a blank page, and I like working with people who care about shipping something that actually works.',
 ]

@@ -11,38 +11,41 @@
   --color-line: var(--line);
   --color-accent: var(--accent);
   --color-accent-dim: var(--accent-dim);
+  --color-accent2: var(--accent2);
   --color-led: var(--led);
 
   --font-display: 'Space Grotesk', ui-sans-serif, system-ui, sans-serif;
   --font-mono: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace;
 }
 
-/* Dark (default) — instrument panel at dusk */
+/* Light (default) — warm paper, sunset accent. Bright and friendly. */
 :root {
-  --bg: #0e0d0b;
-  --surface: #17150f;
-  --surface2: #1f1c15;
-  --text: #ece6d9;
-  --muted: #948d80;
-  --faint: #635d53;
-  --line: #2a271f;
-  --accent: #ffa23a;
-  --accent-dim: #b9762a;
-  --led: #5bd98a;
+  --bg: #fbf6ec;
+  --surface: #f4ecdd;
+  --surface2: #ece1cd;
+  --text: #2a2620;
+  --muted: #6a6154;
+  --faint: #a99e8b;
+  --line: #e6dbc8;
+  --accent: #d9631f;
+  --accent-dim: #a94c13;
+  --accent2: #2c9e93;
+  --led: #2e9e5b;
 }
 
-/* Light — warm paper */
-:root[data-theme='light'] {
-  --bg: #f3eee3;
-  --surface: #ece5d7;
-  --surface2: #e4dccb;
-  --text: #211e18;
-  --muted: #5f5849;
-  --faint: #8d8676;
-  --line: #d8cfbc;
-  --accent: #b5661a;
-  --accent-dim: #9a5713;
-  --led: #2e9e5b;
+/* Dark — warm brown-black (not cold near-black), for the toggle */
+:root[data-theme='dark'] {
+  --bg: #191411;
+  --surface: #221a15;
+  --surface2: #2c221b;
+  --text: #f1e8db;
+  --muted: #a89c8b;
+  --faint: #6f6455;
+  --line: #33291f;
+  --accent: #f5904a;
+  --accent-dim: #c06a2e;
+  --accent2: #4cc5b8;
+  --led: #5bd98a;
 }
 
 html {
@@ -57,49 +60,23 @@ body {
   background: var(--bg);
   color: var(--text);
   font-family: var(--font-display);
-  /* faint instrument grid + top glow */
+  /* soft warm glow, no cold grid */
   background-image:
     radial-gradient(
-      120% 90% at 82% -10%,
-      color-mix(in srgb, var(--accent) 9%, transparent),
-      transparent 60%
+      90% 60% at 88% -10%,
+      color-mix(in srgb, var(--accent) 16%, transparent),
+      transparent 55%
     ),
-    linear-gradient(var(--line) 1px, transparent 1px),
-    linear-gradient(90deg, var(--line) 1px, transparent 1px);
-  background-size:
-    100% 100%,
-    46px 46px,
-    46px 46px;
-  background-position:
-    0 0,
-    0 0,
-    0 0;
-}
-:root[data-theme='light'] body {
-  /* soften the grid on light so it doesn't get noisy */
-  background-image:
     radial-gradient(
-      120% 90% at 82% -10%,
-      color-mix(in srgb, var(--accent) 7%, transparent),
+      70% 50% at 5% 8%,
+      color-mix(in srgb, var(--accent2) 10%, transparent),
       transparent 60%
-    ),
-    linear-gradient(
-      color-mix(in srgb, var(--line) 55%, transparent) 1px,
-      transparent 1px
-    ),
-    linear-gradient(
-      90deg,
-      color-mix(in srgb, var(--line) 55%, transparent) 1px,
-      transparent 1px
     );
-  background-size:
-    100% 100%,
-    46px 46px,
-    46px 46px;
+  background-attachment: fixed;
 }
 
 ::selection {
-  background: color-mix(in srgb, var(--accent) 30%, transparent);
+  background: color-mix(in srgb, var(--accent) 28%, transparent);
   color: var(--text);
 }
 
@@ -109,7 +86,6 @@ body {
   border-radius: 2px;
 }
 
-/* Custom scrollbar (subtle) */
 * {
   scrollbar-width: thin;
   scrollbar-color: var(--line) transparent;
@@ -119,14 +95,11 @@ body {
   0%,
   100% {
     opacity: 1;
-    box-shadow: 0 0 0 0 color-mix(in srgb, var(--led) 60%, transparent);
   }
   50% {
-    opacity: 0.65;
-    box-shadow: 0 0 0 4px color-mix(in srgb, var(--led) 0%, transparent);
+    opacity: 0.55;
   }
 }
-
 @keyframes scan {
   0% {
     transform: translateY(-120%);
@@ -143,7 +116,6 @@ body {
     opacity: 0;
   }
 }
-
 @keyframes caret {
   0%,
   49% {
@@ -152,6 +124,15 @@ body {
   50%,
   100% {
     opacity: 0;
+  }
+}
+@keyframes float-slow {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
   }
 }
 
@@ -168,7 +149,8 @@ body {
   }
   .led,
   .caret,
-  .scanline {
+  .scanline,
+  [style*='float-slow'] {
     animation: none !important;
   }
   *,
