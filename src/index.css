@@ -9,46 +9,51 @@
   --color-faint: var(--faint);
   --color-line: var(--line);
   --color-accent: var(--accent);
-  --color-accent2: var(--accent2);
-  --color-accent3: var(--accent3);
   --color-led: var(--led);
+  --color-core: var(--core);
 
   --font-display: 'Space Grotesk', ui-sans-serif, system-ui, sans-serif;
   --font-mono: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace;
 }
 
-/* Light (default): bright, warm white, Jiraiya neutrals + Naruto orange. */
+/* Default = DARK: near-black canvas, white/cyan chakra. (Prototype VARS.dark) */
 :root {
-  --bg: #fcfbf9;
-  --surface: #ffffff;
-  --surface2: #f3f2ee;
-  --text: #1b1a17;
-  --muted: #6a675f;
-  --faint: #a6a29a;
-  --line: #e9e6df;
-  --accent: #ff6a2b;
-  --accent2: #3b82f6;
-  --accent3: #ffb020;
-  --led: #17c26a;
-  --grad: linear-gradient(115deg, #ff6a2b 0%, #ffb020 100%);
-  --grad2: linear-gradient(115deg, #3b82f6 0%, #60a5fa 100%);
+  --bg: #0a0d12;
+  --surface: #121722;
+  --surface2: #0e1420;
+  --text: #e6edf3;
+  --muted: #8a97a8;
+  --faint: #5c6675;
+  --line: #20293833;
+  --accent: #37c6e0;
+  --stroke: rgba(255, 255, 255, 0.55);
+  --core: #ffffff;
+  --halo: rgba(120, 230, 255, 0.9);
+  --led: #5bd98a;
+  --on-accent: #06232b;
+  --c1: #37c6e0;
+  --c2: #8b7cf6;
+  --c3: #f5a15c;
 }
 
-/* Dark: warm, still lively (toggle) */
-:root[data-theme='dark'] {
-  --bg: #17120e;
-  --surface: #211a14;
-  --surface2: #2b211a;
-  --text: #f5ede0;
-  --muted: #b4a795;
-  --faint: #6f6455;
-  --line: #352a20;
-  --accent: #ff8a45;
-  --accent2: #60a5fa;
-  --accent3: #ffc24b;
-  --led: #4ade80;
-  --grad: linear-gradient(115deg, #ff8a45 0%, #ffc24b 100%);
-  --grad2: linear-gradient(115deg, #60a5fa 0%, #93c5fd 100%);
+/* LIGHT: warm paper, graphite ink flow + grain. (Prototype VARS.light) */
+:root[data-theme='light'] {
+  --bg: #f5f2ea;
+  --surface: #ffffff;
+  --surface2: #efebe1;
+  --text: #1b1a17;
+  --muted: #6b6456;
+  --faint: #9a9284;
+  --line: #e1d9c9;
+  --accent: #27406b;
+  --stroke: rgba(30, 30, 30, 0.5);
+  --core: #1b1a17;
+  --halo: rgba(39, 64, 107, 0.4);
+  --led: #2e9e5b;
+  --on-accent: #f5f2ea;
+  --c1: #2e6fb0;
+  --c2: #6d4fb0;
+  --c3: #c0563a;
 }
 
 html {
@@ -67,73 +72,42 @@ body {
 }
 
 ::selection {
-  background: color-mix(in srgb, var(--accent) 30%, transparent);
+  background: color-mix(in srgb, var(--accent) 32%, transparent);
 }
 :focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 3px;
-  border-radius: 3px;
+  border-radius: 4px;
 }
 * {
   scrollbar-width: thin;
   scrollbar-color: var(--line) transparent;
 }
 
-/* helpers */
-.grad-text {
-  background: var(--grad);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+/* Only rotation (transform) is animated here; glows are baked/static. */
+@keyframes spin-cw {
+  to {
+    transform: rotate(360deg);
+  }
 }
-.blob {
-  position: absolute;
-  border-radius: 9999px;
-  filter: blur(60px);
-  opacity: 0.5;
-  pointer-events: none;
-  z-index: 0;
+.spin-slow {
+  animation: spin-cw 26s linear infinite;
 }
-
-@keyframes float-a {
-  0%, 100% { transform: translate(0, 0) scale(1); }
-  50% { transform: translate(30px, -40px) scale(1.08); }
+.spin-rev {
+  animation: spin-cw 40s linear infinite reverse;
 }
-@keyframes float-b {
-  0%, 100% { transform: translate(0, 0) scale(1); }
-  50% { transform: translate(-40px, 30px) scale(1.12); }
-}
-@keyframes marquee {
-  from { transform: translateX(0); }
-  to { transform: translateX(-50%); }
-}
-@keyframes led-pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.5; }
-}
-@keyframes spin-cw { to { transform: rotate(360deg); } }
-@keyframes orbit {
-  from { transform: rotate(0) translateX(var(--r, 90px)) rotate(0); }
-  to { transform: rotate(360deg) translateX(var(--r, 90px)) rotate(-360deg); }
-}
-
-.float-a { animation: float-a 14s ease-in-out infinite; }
-.float-b { animation: float-b 18s ease-in-out infinite; }
-.marquee-track {
-  display: flex;
-  width: max-content;
-  animation: marquee 26s linear infinite;
-}
-.marquee-wrap:hover .marquee-track { animation-play-state: paused; }
-.led { animation: led-pulse 2.2s ease-in-out infinite; }
-.spin-slow { animation: spin-cw 9s linear infinite; }
-.spin-rev { animation: spin-cw 14s linear infinite reverse; }
-.orbit { animation: orbit 7s linear infinite; }
 
 @media (prefers-reduced-motion: reduce) {
-  html { scroll-behavior: auto; }
-  .float-a, .float-b, .marquee-track, .led, .spin-slow, .spin-rev, .orbit {
+  html {
+    scroll-behavior: auto;
+  }
+  .spin-slow,
+  .spin-rev {
     animation: none !important;
   }
-  *, *::before, *::after { transition-duration: 0.01ms !important; }
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+  }
 }

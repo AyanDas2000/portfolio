@@ -1,26 +1,5 @@
-// All site copy. Style: bright, punchy, few words. NO em or en dashes anywhere.
-// Theme: Naruto (orange energy) + Jiraiya (white / grey calm). Work = missions nested under journey stops.
-
-export const profile = {
-  name: 'Ayan Das',
-  role: 'Automation & AI Engineer',
-  hi: "Hey, I'm Ayan",
-  tagline: 'I build working systems, fast.',
-  taglineAccent: 'Whatever the stack.',
-  intro:
-    'Self taught engineer who turns messy problems into things that actually run. I use AI heavily to build fast, and I travel to see the world.',
-  soul:
-    'I build for a living, and I travel to feel alive. If that sounds like your kind of person, we will get along.',
-  status: 'Open to remote roles',
-  location: 'India, IST, happy on EU hours',
-}
-
-export const interests = [
-  { emoji: '🏍️', label: 'Riding' },
-  { emoji: '🧭', label: 'Travel' },
-  { emoji: '📷', label: 'Photography' },
-  { emoji: '🍥', label: 'Naruto' },
-]
+// All site copy, verbatim from website-copy-v4.md. Do not rewrite or embellish.
+// Contains ZERO em or en dashes. Ranges use "to"; separators use commas.
 
 export const links = {
   email: 'ayan11112000@gmail.com',
@@ -30,21 +9,33 @@ export const links = {
 
 export const nav = [
   { id: 'journey', label: 'Journey' },
-  { id: 'about', label: 'About' },
+  { id: 'craft', label: 'Craft' },
   { id: 'beyond', label: 'Beyond' },
 ]
+
+// 1. Hero + 2. Soul
+export const hero = {
+  eyebrow: 'Self-taught AI automation engineer, two years in.',
+  headline: "Give me a vague idea. I'll hand you a system that runs without me.",
+  subhead:
+    "Not long ago I was proving theorems. Now I build the backend behind AI products people pay to use. A lot of it runs quietly in the background. Some of it I'm not allowed to show you.",
+  soul:
+    "I want to build real things with AI, with people worth betting on. If that's you, you already know where to find me.",
+}
+
+// 3. Origin: Pure Mathematics
+export const origin = {
+  title: 'Pure Mathematics',
+  body: "Before any of this, I studied pure mathematics. Group theory, topology, linear algebra, the kind of math with no obvious use until you notice it's really just a way of seeing structure everywhere. That's still how I think. I look for the shape of a problem before I touch the details, and once the structure is right, the rest tends to follow.",
+}
 
 export type Mission = {
   id: string
   title: string
-  status: string // LIVE / SHIPPED / PERSONAL
-  client: string
-  classified?: boolean
   highlight: string
-  summary: string
-  detail: string
-  stack: string[]
-  image?: string // drop a file at public/work/<id>.png later
+  debrief: string
+  tech?: string[]
+  status?: string // e.g. LIVE
 }
 
 export type Stop = {
@@ -57,24 +48,22 @@ export type Stop = {
   missions: Mission[]
 }
 
+// 4. The Journey
 export const journey: Stop[] = [
   {
     id: 'resgov',
     org: 'ResGov',
-    role: 'Data & Automation Intern',
+    role: 'Project Intern',
     when: '2024',
-    blurb: 'The starting point. A short paid internship where I first caught the automation bug.',
+    blurb: 'A short internship, and the place it all started.',
     missions: [
       {
-        id: 'm-resgov-1',
-        title: 'Government Data Scraping',
-        status: 'SHIPPED',
-        client: 'ResGov',
-        highlight: 'Where it all started',
-        summary: 'Pulled and cleaned structured data from official government sites.',
-        detail:
-          'My first real automation work. Scraped official government sources with Python, BeautifulSoup and Selenium for the JavaScript heavy pages, and iterated with early GPT (3.5 and 4) to shape and clean the output. Short internship, but it is where I learned to make computers do the boring parts.',
-        stack: ['Python', 'BeautifulSoup', 'Selenium', 'GPT-4'],
+        id: 'resgov-1',
+        title: 'First contact with data',
+        highlight: 'Scraped and structured data for 600,000+ panchayats.',
+        debrief:
+          "My first real job with data. I built a pipeline that scraped and organized records for over six lakh panchayats, using Python, BeautifulSoup, Selenium and Requests, and leaned on the early GPT models to make the code faster and harder to break. First time I watched a machine finish an afternoon of someone's work in seconds. I was hooked.",
+        tech: ['Python', 'BeautifulSoup', 'Selenium', 'Requests', 'GPT'],
       },
     ],
   },
@@ -83,110 +72,176 @@ export const journey: Stop[] = [
     org: 'Primeloop',
     role: 'Automation Engineer',
     when: '2024 to 2025',
-    blurb: 'Built the automation backbone alongside founder Tanmay. This is where I went deep.',
+    blurb:
+      'Two of us. The founder brought the clients, I built the systems. This is where scripts turned into systems.',
     missions: [
       {
-        id: 'm-pl-1',
-        title: 'Amazon Price Tracker',
-        status: 'SHIPPED',
-        client: 'Happy Wagon',
-        highlight: '3 to 4 hrs down to ~20 min',
-        summary: 'A Lambda scraper that catches Amazon price drift and reports it daily.',
-        detail:
-          'Their listings kept drifting out of sync with Seller Central pricing, so someone checked hundreds of products by hand every day. I replaced that with an AWS Lambda scraper that got past Amazon bot checks, cross checked live listings against Seller Central data, and emailed a full discrepancy report every morning. Parallelized it from three to four hours down to about twenty minutes.',
-        stack: ['AWS Lambda', 'Python', 'anti-bot APIs'],
+        id: 'primeloop-1',
+        title: 'A library of 250+ workflows',
+        highlight: '250+ reusable templates, plus the guides to run them.',
+        debrief:
+          "I built more than 250 automation templates for a US AI-agent platform, along with the written guides that made them usable by people who don't code. Working automation, straight out of the box. Which platform, and what it powers, stays with the client.",
       },
       {
-        id: 'm-pl-2',
-        title: 'E-commerce Ops Automation',
-        status: 'SHIPPED',
-        client: 'Happy Wagon',
-        highlight: '3 storefronts, 1 source of truth',
-        summary: 'One pipeline unifying Shopify, Flipkart and Amazon orders into Airtable.',
-        detail:
-          'Every order across three storefronts flowed into Airtable as the single source of truth, then into a customer intelligence agent sitting on top of their support tool. I also built a chat extension UI and an early internal tool that ingested customer conversations to surface business insight.',
-        stack: ['Airtable', 'Python', 'AWS', 'Supabase'],
+        id: 'primeloop-2',
+        title: 'Happy Wagon, on its own',
+        highlight: 'Prices tracked automatically, nothing slipping past.',
+        debrief:
+          'For Happy Wagon I built the pipeline that ran their e-commerce operations, and a tracker that watched Amazon for price drift and caught a moved price before a person would have. Small edges add up when you sell online.',
+      },
+      {
+        id: 'primeloop-3',
+        title: 'The plumbing',
+        highlight: 'Hours quietly handed back to teams that never saw the code.',
+        debrief:
+          'For other clients I built the unglamorous parts. Notification handling, reply routing, and an analyzer that pulled PRDs out of Asana and turned them into structured pages in Notion. Boring to describe. It saved people real time.',
+        tech: ['Asana', 'Notion'],
+      },
+      {
+        id: 'primeloop-4',
+        title: 'The first outreach engine',
+        highlight: 'The rough draft of what became my main work.',
+        debrief:
+          'The first time I built something that researched companies and reached out without a human driving it. It started in Make.com, moved to n8n, and went through more iterations than I can count. Rough at first, but it was the seed of the platform I work on now. A partnerships agency found our two-person team on the back of it, and that turned into Outpilot.',
+        tech: ['Make.com', 'n8n'],
       },
     ],
   },
   {
     id: 'outpilot',
     org: 'Outpilot.ai',
-    role: 'Automation & AI Engineer', // TODO: confirm your exact title
+    role: 'Senior Forward Deployed Engineer',
     when: '2025 to now',
-    blurb: 'Where the outreach work grew into a real product.',
+    blurb:
+      'Outpilot is a managed service that runs different kinds of outreach: sponsorship, partnership and B2B. Two halves to what I do here.',
     current: true,
     missions: [
       {
-        id: 'm-op-1',
-        title: 'AI Outreach Platform',
+        id: 'outpilot-1',
+        title: 'The engine',
+        highlight: 'The scaling infrastructure the whole team runs on.',
         status: 'LIVE',
-        client: 'Partners incl. Brooklyn Pickleball, Brasil Rugby',
-        highlight: 'Campaign prep cut from ~2 weeks to minutes',
-        summary: 'The automation backend of a productized cold-outreach SaaS.',
-        detail:
-          'Took it from a Make.com prototype to a live product on self hosted n8n. Built a multi agent research engine (Gemini plus search APIs) at roughly a tenth the cost of ChatGPT research, a Redis queue and Docker parallelism for throughput, and an automated prompt tuning loop that tests and rewrites its own prompts until they hold up. Reply handling across many inboxes and domains. Some specifics stay under NDA.',
-        stack: ['n8n', 'Python', 'AWS', 'Redis', 'LLMs'],
+        debrief:
+          'This one I built hand in hand with our founder. He set the vision and the direction, and I designed and built the architecture that makes it real, the infrastructure, the workflows, the way it holds together at scale. It is the framework a set of deployed engineers, me included, use to run personalized outreach with precision. How it works inside stays with the company. That it works is the part I can show you.',
+      },
+      {
+        id: 'outpilot-2',
+        title: 'The campaigns',
+        highlight: 'Live campaigns for real partners, booking real meetings.',
+        status: 'LIVE',
+        debrief:
+          'On top of that framework I build and run campaigns for specific partners, including Brooklyn Pickleball and Brasil Rugby. A campaign that used to take a month to stand up now ships in a few days, and a good one can book several meetings in a week. The rest of the roster stays off the page.',
       },
     ],
   },
 ]
 
-// Personal builds, off the main path.
-export const sideQuests: Mission[] = [
+// 5. How I build (Craft)
+export const craft = {
+  title: 'How I build',
+  points: [
+    'I self-host my automation stacks on headless servers and keep them lean and redundant. Redis to queue work across multiple workers, Docker to keep it reproducible, backups in more than one place so nothing has a single point of failure. When the big cloud bill stopped making sense, I moved to leaner infrastructure.',
+    'I work in agentic workflows natively, single-agent and multi-agent, on the cloud and increasingly from my own terminal. I build my own tooling, including a library of skills that let me run large systems from the command line.',
+    "I built a prompt loop that tunes itself. It runs, checks whether the output holds, rewrites the prompt when it doesn't, and repeats until it stops failing. How it decides what is good enough is the interesting part.",
+  ],
+}
+
+// 6. The Stack
+export const stack: { label: string; items: string[] }[] = [
+  { label: 'Languages', items: ['Python', 'JavaScript'] },
   {
-    id: 'sq-1',
-    title: 'Motorcycle Companion App',
-    status: 'PERSONAL',
-    client: 'For my own bike',
-    highlight: 'Weekend curiosity, real project',
-    summary: "Reverse-engineered my bike's Bluetooth dashboard and built an Android app for it.",
-    detail:
-      'Decompiled the stock app, mapped the BLE protocol (frames, opcodes, checksums), then built an Android companion that pushes navigation and music to the cluster and lets me control music from the bike own buttons. Entirely mine, and open to show.',
-    stack: ['Kotlin', 'Android', 'BLE'],
+    label: 'Automation (no-code / low-code)',
+    items: ['n8n', 'Make.com', 'Zapier', 'Lindy'],
   },
   {
-    id: 'sq-2',
-    title: 'JARVIS Voice Assistant',
-    status: 'PERSONAL',
-    client: 'For myself',
-    highlight: '10 iterations',
-    summary: 'My own voice assistant with wake-word, speech-to-text and text-to-speech.',
-    detail:
-      'Built from scratch with wake-word detection (Porcupine), speech-to-text (Whisper and Vosk) and text-to-speech. Iterated across ten versions to get the response time and reliability where I wanted them.',
-    stack: ['Python', 'Whisper', 'Porcupine'],
+    label: 'APIs & data',
+    items: ['REST', 'SOAP', 'webhooks', 'FastAPI', 'RapidAPI', 'Apify', 'Serper.dev', 'Parallel.ai'],
   },
   {
-    id: 'sq-3',
-    title: 'Early experiments',
-    status: 'PERSONAL',
-    client: 'Learning by building',
-    highlight: 'Side quests',
-    summary: 'An AI data analyst, scraping tools, and other things I built to learn.',
-    detail:
-      'Before the bigger work, a pile of small builds: an AI data analyst, various scrapers, and half-finished ideas I chased just to see if I could. This is where a lot of the muscle came from.',
-    stack: ['Python', 'LLMs', 'APIs'],
+    label: 'AI / LLMs',
+    items: [
+      'multi-provider via OpenRouter (Gemini, Claude, GPT, Mistral, DeepSeek, Grok)',
+      'single and multi-agent pipelines',
+      'self-tuning prompt loops',
+      'custom Claude Code skills',
+    ],
+  },
+  {
+    label: 'Backend & infra',
+    items: [
+      'self-hosted servers (AWS, Hetzner)',
+      'Redis',
+      'Docker',
+      'serverless edge functions',
+      'Supabase',
+      'PostgreSQL',
+      'Airtable',
+    ],
+  },
+  { label: 'Scraping', items: ['BeautifulSoup', 'Selenium', 'anti-bot handling'] },
+]
+
+// 7. Side Quests
+export const sideQuestsIntro =
+  'Things I built off the main path. Some useful, some just to prove I could.'
+
+export const sideQuests: { title: string; body: string }[] = [
+  {
+    title: 'Teaching',
+    body: "I've tutored on the side for years, teaching people the things I once had to teach myself. Winding it down now, but it taught me that if you can't explain a thing simply, you don't really have it.",
+  },
+  {
+    title: 'A companion app for my motorcycle',
+    body: 'My bike ships with a companion app from the manufacturer, but it is laggy and half-broken. I reverse-engineered it, stripped it to the frame, and rebuilt it sleek, the app it should have shipped with. Now my phone talks to my motorcycle properly.',
+  },
+  {
+    title: 'JARVIS',
+    body: 'A voice assistant built from scratch. Yes, named after that one. I wanted to see how far I could get building my own from nothing.',
+  },
+  {
+    title: 'AI Analyst',
+    body: 'An older build that reads a dataset and tells you what is actually going on in it, so analysis starts from questions instead of spreadsheets.',
+  },
+  {
+    title: 'Support tooling',
+    body: 'A ticket viewer and an auth bridge I built to make messy support queues legible.',
+  },
+  {
+    title: 'The experiments',
+    body: 'Machine-learning notebooks, data-analysis projects, scrapers, a drawer of half-built ideas from the years before the real work.',
   },
 ]
 
-export const values = [
-  { emoji: '🛠️', title: 'Build with AI', body: 'Use every tool I can, AI heavily, to make real things fast and well.' },
-  { emoji: '🌏', title: 'See the world', body: 'Long bike tours and slow travel. New places keep me curious.' },
-  { emoji: '🌱', title: 'Leave it better', body: 'Do genuinely good work for my people, and put weight behind sustainability.' },
+// 8. About / How I operate
+export const about = {
+  body: "Here is how I actually work. Hand me a stack I've never touched and I'll ship something that runs on it before the week is out. I don't get attached to tools. I care whether the thing works, and whether it keeps working after I walk away. I use AI heavily and I've gotten good at getting it to do what I mean. Most of what I do is take an idea that's still fuzzy and turn it into something you can rely on. Away from the screen I ride motorcycles on long routes with no real plan, I travel slowly, and I usually have a camera on me. I want the things I build to be worth building, which more and more means putting weight behind sustainability.",
+  creed:
+    "There's a character I've followed since I was a kid whose whole thing was staying curious, never sitting still, and putting everything behind the people he believed in. I've quietly built my life around that.",
+}
+
+// 9. Contact
+export const contact = {
+  headline: 'Bring me the messy version.',
+  line:
+    'The vaguer and more unsolved it is, the more I want to hear about it. Email is the fastest way in.',
+}
+
+// 10. Jiraiya pull-quotes (author rendered without a dash)
+export const quotes = {
+  main: {
+    text:
+      'When people get hurt, they learn to hate. But knowing that pain allows people to be kind.',
+    author: 'Jiraiya',
+  },
+  second: {
+    text: 'A real ninja is one who endures. All you need is the guts to never give up.',
+    author: 'Jiraiya',
+  },
+}
+
+// 11. Console easter egg
+export const consoleLines = [
+  '> boot sequence complete. all nodes online.',
+  "> you opened the console. that means you're curious, which was the whole point.",
+  '> reach me: ayan11112000@gmail.com. and for the record, the toad sage had it right.',
 ]
-
-export const jiraiya =
-  'A bit guided by Jiraiya: stay curious, keep moving, and back the people you believe in.'
-
-export const about =
-  'I taught myself to build a little under two years ago and have not stopped since. I am happiest with a hard problem, a blank page, and people who care about shipping something real.'
-
-export const beyond = [
-  { emoji: '🏍️', title: 'Riding', body: 'Weekends and long tours on the bike.' },
-  { emoji: '🧭', title: 'Travel', body: 'New places, slow trips, no rush.' },
-  { emoji: '📷', title: 'Photography', body: 'Holding on to the road and the trips.' },
-  { emoji: '🍥', title: 'Naruto', body: 'Jiraiya guy at heart. Itachi and Kakashi are cool.' },
-]
-
-// Fill in AFTER Tanmay / Richard approve the wording.
-export const testimonials: { quote: string; name: string; role: string }[] = []

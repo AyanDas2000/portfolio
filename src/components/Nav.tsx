@@ -1,20 +1,34 @@
 import { nav, links } from '../data'
-import { cn, useTheme } from '../lib'
+import { cn } from '../lib'
 
 function go(id: string) {
   document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
 }
 
-export function Nav({ active }: { active: string }) {
-  const [theme, toggle] = useTheme()
+export function Nav({
+  active,
+  theme,
+  onToggle,
+}: {
+  active: string
+  theme: 'dark' | 'light'
+  onToggle: () => void
+}) {
   return (
-    <div className="sticky top-0 z-50 border-b border-line/70 bg-bg/70 backdrop-blur-md">
+    <header
+      className="sticky top-0 z-50 border-b backdrop-blur-md"
+      style={{
+        borderColor: 'var(--line)',
+        background: 'color-mix(in srgb, var(--bg) 68%, transparent)',
+      }}
+    >
       <nav className="mx-auto flex max-w-5xl items-center justify-between px-6 py-4 sm:px-8">
         <button
           onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-          className="font-display text-lg font-bold tracking-tight"
+          className="text-lg font-bold tracking-tight"
+          style={{ color: 'var(--text)' }}
         >
-          Ayan<span className="text-accent">.</span>
+          Ayan<span style={{ color: 'var(--accent)' }}>.</span>
         </button>
 
         <div className="hidden items-center gap-7 sm:flex">
@@ -22,10 +36,8 @@ export function Nav({ active }: { active: string }) {
             <button
               key={item.id}
               onClick={() => go(item.id)}
-              className={cn(
-                'text-sm font-medium transition-colors',
-                active === item.id ? 'text-accent' : 'text-muted hover:text-text',
-              )}
+              className={cn('text-sm font-medium transition-colors')}
+              style={{ color: active === item.id ? 'var(--accent)' : 'var(--muted)' }}
             >
               {item.label}
             </button>
@@ -34,9 +46,10 @@ export function Nav({ active }: { active: string }) {
 
         <div className="flex items-center gap-3">
           <button
-            onClick={toggle}
-            aria-label="Toggle theme"
-            className="rounded-full border border-line p-2 text-muted transition-colors hover:border-accent/50 hover:text-accent"
+            onClick={onToggle}
+            aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} theme`}
+            className="rounded-full border p-2 transition-colors"
+            style={{ borderColor: 'var(--line)', color: 'var(--muted)' }}
           >
             {theme === 'dark' ? (
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden>
@@ -51,12 +64,13 @@ export function Nav({ active }: { active: string }) {
           </button>
           <a
             href={`mailto:${links.email}`}
-            className="rounded-full bg-[image:var(--grad)] px-4 py-2 text-sm font-semibold text-white shadow-sm transition-transform hover:-translate-y-0.5"
+            className="rounded-full px-4 py-2 text-sm font-semibold transition-transform hover:-translate-y-0.5"
+            style={{ background: 'var(--accent)', color: 'var(--on-accent)' }}
           >
             Contact
           </a>
         </div>
       </nav>
-    </div>
+    </header>
   )
 }

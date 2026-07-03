@@ -1,23 +1,26 @@
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { AnimatePresence, motion } from 'motion/react'
 import type { Mission } from '../data'
-
-const STATUS: Record<string, string> = {
-  LIVE: 'text-led bg-led/12',
-  SHIPPED: 'text-accent bg-accent/12',
-  PERSONAL: 'text-muted bg-surface2',
-}
+import { Chip, LiveDot, accentVar } from './ui'
 
 export function Modal({ mission, onClose }: { mission: Mission | null; onClose: () => void }) {
+  const closeRef = useRef<HTMLButtonElement>(null)
+  const lastFocused = useRef<HTMLElement | null>(null)
+
   useEffect(() => {
-    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && onClose()
-    if (mission) {
-      document.addEventListener('keydown', onKey)
-      document.body.style.overflow = 'hidden'
+    if (!mission) return
+    lastFocused.current = document.activeElement as HTMLElement
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose()
     }
+    document.addEventListener('keydown', onKey)
+    document.body.style.overflow = 'hidden'
+    const t = window.setTimeout(() => closeRef.current?.focus(), 30)
     return () => {
       document.removeEventListener('keydown', onKey)
       document.body.style.overflow = ''
+      window.clearTimeout(t)
+      lastFocused.current?.focus?.()
     }
   }, [mission, onClose])
 
@@ -25,32 +28,51 @@ export function Modal({ mission, onClose }: { mission: Mission | null; onClose: 
     <AnimatePresence>
       {mission && (
         <motion.div
-          className="fixed inset-0 z-[70] flex items-center justify-center p-4"
+          className="fixed inset-0 z-[80] flex items-center justify-center p-4"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
+          transition={{ duration: 0.2 }}
           onClick={onClose}
         >
-          <div className="absolute inset-0 bg-black/45 backdrop-blur-sm" />
+          <div className="absolute inset-0 bg-black/55 backdrop-blur-sm" />
           <motion.div
             role="dialog"
             aria-modal="true"
-            aria-label={mission.title}
-            initial={{ opacity: 0, scale: 0.94, y: 16 }}
+            aria-labelledby="modal-title"
+            initial={{ opacity: 0, scale: 0.95, y: 14 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.96, y: 10 }}
+            exit={{ opacity: 0, scale: 0.97, y: 8 }}
             transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
             onClick={(e) => e.stopPropagation()}
-            className="relative z-10 w-full max-w-lg overflow-hidden rounded-2xl border border-line bg-bg shadow-2xl"
+            className="relative z-10 w-full max-w-lg overflow-hidden rounded-2xl border backdrop-blur-md"
+            style={{
+              borderColor: 'var(--line)',
+              background: 'color-mix(in srgb, var(--surface) 92%, transparent)',
+              boxShadow: '0 40px 100px -40px rgba(0,0,0,0.7)',
+            }}
           >
-            <div className="flex items-center justify-between border-b border-line px-6 py-4">
-              <span className={`rounded-full px-2.5 py-0.5 font-mono text-[11px] font-medium ${STATUS[mission.status] ?? ''}`}>
-                {mission.status}
-              </span>
+            <div
+              className="absolute inset-x-0 top-0 h-[3px]"
+              style={{ background: 'linear-gradient(90deg, var(--c1), var(--c2), var(--c3))' }}
+            />
+            <div
+              className="flex items-center justify-between border-b px-6 py-4"
+              style={{ borderColor: 'var(--line)' }}
+            >
+              {mission.status === 'LIVE' ? (
+                <LiveDot />
+              ) : (
+                <span className="font-mono text-[11px] tracking-widest" style={{ color: 'var(--muted)' }}>
+                  DEBRIEF
+                </span>
+              )}
               <button
+                ref={closeRef}
                 onClick={onClose}
                 aria-label="Close"
-                className="text-muted transition-colors hover:text-accent"
+                className="transition-colors"
+                style={{ color: 'var(--muted)' }}
               >
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
                   <path d="M6 6l12 12M18 6L6 18" />
@@ -59,36 +81,22 @@ export function Modal({ mission, onClose }: { mission: Mission | null; onClose: 
             </div>
 
             <div className="max-h-[70vh] overflow-y-auto px-6 py-5">
-              <h3 className="font-display text-2xl font-bold">{mission.title}</h3>
-              <span className="mt-3 inline-block rounded-full bg-accent/10 px-3 py-1 font-mono text-xs font-medium text-accent">
+              <h3 id="modal-title" className="text-2xl font-bold tracking-tight" style={{ color: 'var(--text)' }}>
+                {mission.title}
+              </h3>
+              <p className="mt-2 text-[13px] font-medium" style={{ color: 'var(--accent)' }}>
                 {mission.highlight}
-              </span>
-              <p className="mt-2 font-mono text-xs text-faint">
-                client:{' '}
-                {mission.classified ? (
-                  <span className="select-none rounded bg-text px-2 py-0.5 tracking-widest text-bg">CLASSIFIED</span>
-                ) : (
-                  <span className="text-muted">{mission.client}</span>
-                )}
               </p>
-
-              <p className="mt-4 text-[15px] leading-relaxed text-muted">{mission.detail}</p>
-
-              <div className="mt-4 flex flex-wrap gap-2">
-                {mission.stack.map((s) => (
-                  <span key={s} className="rounded-md bg-surface2 px-2.5 py-1 font-mono text-[11px] text-muted">
-                    {s}
-                  </span>
-                ))}
-              </div>
-
-              <div className="mt-5 flex h-36 items-center justify-center rounded-lg border border-dashed border-line bg-surface2/50 font-mono text-[11px] text-faint">
-                {mission.image ? (
-                  <img src={mission.image} alt={mission.title} className="h-full w-full rounded-lg object-cover" />
-                ) : (
-                  'workflow preview, partially redacted (NDA)'
-                )}
-              </div>
+              <p className="mt-4 text-[15px] leading-relaxed" style={{ color: 'var(--muted)' }}>
+                {mission.debrief}
+              </p>
+              {mission.tech && mission.tech.length > 0 && (
+                <div className="mt-5 flex flex-wrap gap-1.5">
+                  {mission.tech.map((t, i) => (
+                    <Chip key={t} label={t} color={accentVar(i)} />
+                  ))}
+                </div>
+              )}
             </div>
           </motion.div>
         </motion.div>

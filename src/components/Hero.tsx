@@ -1,97 +1,117 @@
-import { motion, useReducedMotion } from 'motion/react'
-import { profile, interests, links } from '../data'
-import { Rasengan } from './Rasengan'
-
-function go(id: string) {
-  document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
-}
+import { useRef } from 'react'
+import { motion, useInView, useReducedMotion } from 'motion/react'
+import { hero } from '../data'
 
 const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1]
 
-export function Hero() {
+// A small, clean chakra orb: baked radial halo + thin ring + a slowly rotating
+// conic sheen (transform only) + a core dot with a baked glow. No animated blur.
+// The rotation pauses whenever the orb is scrolled off-screen.
+function ChakraOrb({ className = '', paused = false }: { className?: string; paused?: boolean }) {
+  const play = paused ? 'paused' : 'running'
+  return (
+    <div className={`pointer-events-none relative ${className}`} aria-hidden>
+      <div
+        className="absolute inset-[-18%] rounded-full blur-2xl"
+        style={{
+          background:
+            'radial-gradient(circle, var(--halo), transparent 68%)',
+        }}
+      />
+      <div
+        className="absolute inset-0 rounded-full border"
+        style={{ borderColor: 'color-mix(in srgb, var(--stroke) 55%, transparent)' }}
+      />
+      <div
+        className="spin-slow absolute inset-[6%] rounded-full opacity-70 mix-blend-screen"
+        style={{
+          animationPlayState: play,
+          background:
+            'conic-gradient(from 0deg, transparent 0deg, var(--halo) 40deg, transparent 120deg, color-mix(in srgb, var(--c2) 60%, transparent) 210deg, transparent 300deg, var(--halo) 350deg)',
+        }}
+      />
+      <div
+        className="spin-rev absolute inset-[26%] rounded-full opacity-60 mix-blend-screen"
+        style={{
+          animationPlayState: play,
+          background:
+            'conic-gradient(from 140deg, transparent, var(--halo) 30deg, transparent 130deg, color-mix(in srgb, var(--c1) 55%, transparent) 240deg, transparent 320deg)',
+        }}
+      />
+      <div
+        className="absolute inset-[43%] rounded-full"
+        style={{
+          background: 'var(--core)',
+          boxShadow: '0 0 18px 5px var(--halo)',
+        }}
+      />
+    </div>
+  )
+}
+
+export function Hero({ theme }: { theme: 'dark' | 'light' }) {
   const reduce = useReducedMotion()
+  const orbRef = useRef<HTMLDivElement>(null)
+  const orbInView = useInView(orbRef, { amount: 0.2 })
   const rise = (d: number) =>
     reduce
       ? {}
       : {
-          initial: { opacity: 0, y: 24 },
+          initial: { opacity: 0, y: 20 },
           animate: { opacity: 1, y: 0 },
           transition: { duration: 0.6, delay: d, ease: EASE },
         }
 
   return (
-    <header className="relative overflow-hidden">
-      <div
-        className="blob float-b -right-24 top-0 h-72 w-72 opacity-30"
-        style={{ background: 'var(--grad2)' }}
-        aria-hidden
-      />
-      <div className="relative z-10 mx-auto grid max-w-5xl items-center gap-10 px-6 pb-16 pt-16 sm:px-8 sm:pb-24 sm:pt-24 lg:grid-cols-[1.35fr_1fr]">
+    <section className="relative">
+      <div className="mx-auto grid max-w-5xl grid-cols-1 items-center gap-10 px-6 pb-16 pt-20 sm:px-8 sm:pb-24 sm:pt-28 md:grid-cols-[1.15fr_auto]">
         <div>
-          <motion.p {...rise(0)} className="font-mono text-base text-muted">
-            {profile.hi} <span className="inline-block">👋</span>
+          <motion.p
+            {...rise(0)}
+            className="font-mono text-[13px] font-medium tracking-widest"
+            style={{ color: 'var(--accent)' }}
+          >
+            {hero.eyebrow}
           </motion.p>
 
           <motion.h1
             {...rise(0.08)}
-            className="mt-4 font-display text-5xl font-bold leading-[1.05] tracking-tight sm:text-6xl"
+            className="mt-5 text-4xl font-bold leading-[1.08] tracking-tight sm:text-5xl lg:text-6xl"
+            style={{
+              color: 'var(--text)',
+              textShadow: theme === 'dark' ? '0 0 44px rgba(120,230,255,0.16)' : 'none',
+            }}
           >
-            {profile.tagline} <span className="grad-text">{profile.taglineAccent}</span>
+            {hero.headline}
           </motion.h1>
 
-          <motion.p {...rise(0.16)} className="mt-5 max-w-xl text-lg leading-relaxed text-muted">
-            {profile.intro}
+          <motion.p
+            {...rise(0.18)}
+            className="mt-6 max-w-xl text-lg leading-relaxed"
+            style={{ color: 'var(--muted)' }}
+          >
+            {hero.subhead}
           </motion.p>
 
           <motion.p
-            {...rise(0.22)}
-            className="mt-5 max-w-xl border-l-2 border-accent pl-4 text-[15px] italic leading-relaxed text-text/80"
+            {...rise(0.26)}
+            className="mt-6 max-w-xl border-l-2 pl-4 text-[15px] italic leading-relaxed"
+            style={{ borderColor: 'var(--accent)', color: 'color-mix(in srgb, var(--text) 82%, transparent)' }}
           >
-            {profile.soul}
+            {hero.soul}
           </motion.p>
-
-          <motion.div {...rise(0.3)} className="mt-8 flex flex-wrap items-center gap-3">
-            <button
-              onClick={() => go('work')}
-              className="rounded-full bg-[image:var(--grad)] px-6 py-3 font-semibold text-white shadow-md transition-transform hover:-translate-y-0.5"
-            >
-              See my work
-            </button>
-            <a
-              href={`mailto:${links.email}`}
-              className="rounded-full border border-line bg-surface px-6 py-3 font-semibold text-text transition-colors hover:border-accent/50"
-            >
-              Get in touch
-            </a>
-            <span className="ml-1 inline-flex items-center gap-2 text-sm text-muted">
-              <span className="led inline-block h-2.5 w-2.5 rounded-full bg-led" />
-              {profile.status}
-            </span>
-          </motion.div>
-
-          <motion.div {...rise(0.38)} className="mt-9 flex flex-wrap gap-2.5">
-            {interests.map((it) => (
-              <span
-                key={it.label}
-                className="inline-flex items-center gap-1.5 rounded-full border border-line bg-surface px-4 py-1.5 text-sm font-medium"
-              >
-                <span aria-hidden>{it.emoji}</span>
-                {it.label}
-              </span>
-            ))}
-          </motion.div>
         </div>
 
-        {/* Rasengan orb */}
         <motion.div
-          initial={reduce ? undefined : { opacity: 0, scale: 0.8 }}
+          ref={orbRef}
+          initial={reduce ? undefined : { opacity: 0, scale: 0.85 }}
           animate={reduce ? undefined : { opacity: 1, scale: 1 }}
-          transition={{ duration: 0.8, delay: 0.2, ease: EASE }}
+          transition={{ duration: 0.9, delay: 0.2, ease: EASE }}
           className="mx-auto flex items-center justify-center"
         >
-          <Rasengan className="h-52 w-52 sm:h-64 sm:w-64 lg:h-72 lg:w-72" />
+          <ChakraOrb className="h-44 w-44 sm:h-56 sm:w-56 lg:h-64 lg:w-64" paused={!orbInView} />
         </motion.div>
       </div>
-    </header>
+    </section>
   )
 }
