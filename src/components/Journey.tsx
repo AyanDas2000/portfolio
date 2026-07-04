@@ -84,6 +84,18 @@ function StopRow({
         <NodeCard stop={stop} onOpen={onOpenStop} />
       </div>
       <div className={cn('flex flex-wrap justify-center gap-2.5 md:max-w-xs md:flex-col md:flex-nowrap', brCol)}>
+        {branches.length > 0 && (
+          <motion.span
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={VIEW}
+            transition={{ duration: 0.5, ease: EASE }}
+            className="mb-1 font-mono text-[10px] tracking-[0.28em]"
+            style={{ color: 'var(--faint)' }}
+          >
+            ◇ SIDE QUESTS
+          </motion.span>
+        )}
         {branches.map((b, i) => (
           <BranchChip key={b.id} b={b} onOpen={onOpenBranch} i={i} />
         ))}

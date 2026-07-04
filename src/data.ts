@@ -228,13 +228,15 @@ export const contact = {
 
 // 10. Jiraiya pull-quotes (author rendered without a dash)
 export const quotes = {
+  // top (near the work): the never-give-up line
   main: {
-    text:
-      'When people get hurt, they learn to hate. But knowing that pain allows people to be kind.',
+    text: 'A real ninja is one who endures. All you need is the guts to never give up.',
     author: 'Jiraiya',
   },
+  // bottom (the closing, deeper philosophy)
   second: {
-    text: 'A real ninja is one who endures. All you need is the guts to never give up.',
+    text:
+      'When people get hurt, they learn to hate. But knowing that pain allows people to be kind.',
     author: 'Jiraiya',
   },
 }
@@ -258,10 +260,35 @@ export const branchesByStop: Record<string, Branch[]> = {
   primeloop: [
     { id: 'b-analyst', title: 'AI Analyst', body: 'A build that reads a dataset and tells you what is actually going on in it, so analysis starts from questions instead of spreadsheets.' },
     { id: 'b-jarvis', title: 'JARVIS', body: 'A voice assistant built from scratch. Yes, named after that one. I wanted to see how far I could get building my own from nothing.', tech: ['Python', 'Whisper'] },
+    { id: 'b-support', title: 'Support tooling', body: 'A ticket viewer and an auth bridge I built to make messy support queues legible.' },
     { id: 'b-exp', title: 'The experiments', body: 'Machine-learning notebooks, data-analysis projects, scrapers, a drawer of half-built ideas from the years before the real work.' },
   ],
   outpilot: [
-    { id: 'b-moto', title: 'Motorcycle app', body: 'My bike ships with a companion app from the manufacturer, but it is laggy and half-broken. I reverse-engineered it, stripped it to the frame, and rebuilt it sleek. Now my phone talks to my motorcycle properly.', tech: ['Kotlin', 'BLE'] },
-    { id: 'b-support', title: 'Support tooling', body: 'A ticket viewer and an auth bridge I built to make messy support queues legible.' },
+    { id: 'b-moto', title: 'Bike dashboard hack', body: 'My bike ships with a companion app from the manufacturer, but it is laggy and half-broken. I reverse-engineered its Bluetooth, stripped it to the frame, and rebuilt it sleek. Now my phone talks to my motorcycle properly.', tech: ['Kotlin', 'BLE'] },
   ],
+}
+
+// Who the work reached, grouped by where I built it.
+export const clients: { via: string; note: string; names: string[] }[] = [
+  { via: 'Primeloop', note: 'Systems and automation for real businesses.', names: ['Happy Wagon'] },
+  {
+    via: 'Outpilot.ai',
+    note: 'Live outreach campaigns I built and run.',
+    names: ['Brooklyn Pickleball', 'Brasil Rugby', 'The Sponsorship Guy'],
+  },
+]
+
+// Approved testimonials (fill in once Richard/Tanmay confirm the wording).
+export const testimonialQuotes: { quote: string; name: string; role: string }[] = [
+  // { quote: '...', name: 'Richard Cronin', role: 'The Sponsorship Guy' },
+]
+
+// Public recognition. Framed honestly: this praised the Outpilot work, and I built and ran
+// the campaign behind it. Confirm wording + get Richard's nod before deploying public.
+export const recognition = {
+  quote: 'No slop. The kind of copy that gets the recipient to feel known.',
+  author: 'Larry Weil',
+  authorRole: 'President & Founder, The Sponsorship Guy',
+  note: 'Public praise for the Outpilot work. I built and ran the campaign it was written about.',
+  url: '', // add the LinkedIn post link if you want it clickable
 }

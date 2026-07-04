@@ -1,12 +1,19 @@
+import { motion } from 'motion/react'
 import { origin } from '../data'
-import { Reveal } from '../lib'
 import { Glass, Section } from './ui'
+
+const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1]
 
 export function Origin() {
   return (
     <Section className="pt-4!">
       <div className="mx-auto max-w-3xl">
-        <Reveal>
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: false, margin: '-12%' }}
+          transition={{ duration: 0.7, ease: EASE }}
+        >
           <Glass bar glow className="p-7 sm:p-9">
             <p className="font-mono text-[11px] tracking-widest" style={{ color: 'var(--muted)' }}>
               ORIGIN
@@ -18,7 +25,7 @@ export function Origin() {
               {origin.body}
             </p>
           </Glass>
-        </Reveal>
+        </motion.div>
       </div>
     </Section>
   )

@@ -7,6 +7,7 @@ import { Origin } from './components/Origin'
 import { Journey } from './components/Journey'
 import { Craft } from './components/Craft'
 import { Stack } from './components/Stack'
+import { Clients } from './components/Clients'
 import { About } from './components/About'
 import { Contact } from './components/Contact'
 import { consoleLines, nav } from './data'
@@ -66,6 +67,7 @@ function App() {
         <Journey />
         <Craft />
         <Stack />
+        <Clients />
         <About />
         <Contact />
       </main>

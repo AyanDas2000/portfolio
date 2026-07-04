@@ -1,6 +1,8 @@
+import { motion } from 'motion/react'
 import { craft } from '../data'
-import { Reveal } from '../lib'
 import { Glass, Section, SectionHead } from './ui'
+
+const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1]
 
 export function Craft() {
   return (
@@ -9,7 +11,13 @@ export function Craft() {
         <SectionHead eyebrow="CRAFT" title={craft.title} />
         <div className="mt-10 grid gap-5 md:grid-cols-3">
           {craft.points.map((p, i) => (
-            <Reveal key={i} delay={i * 0.08}>
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 34 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: false, margin: '-8%' }}
+              transition={{ duration: 0.6, delay: i * 0.16, ease: EASE }}
+            >
               <Glass className="h-full p-6">
                 <span className="font-mono text-2xl font-bold" style={{ color: 'var(--accent)' }}>
                   0{i + 1}
@@ -18,7 +26,7 @@ export function Craft() {
                   {p}
                 </p>
               </Glass>
-            </Reveal>
+            </motion.div>
           ))}
         </div>
       </div>
