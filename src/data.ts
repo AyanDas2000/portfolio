@@ -170,7 +170,7 @@ export const stack: { label: string; items: string[] }[] = [
   {
     label: 'Backend & infra',
     items: [
-      'self-hosted servers (AWS, bare-metal)',
+      'self-hosted servers (AWS, Hetzner)',
       'Redis',
       'Docker',
       'serverless edge functions',

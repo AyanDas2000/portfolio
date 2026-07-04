@@ -155,16 +155,29 @@ function ToolTag({ label, color }: { label: string; color: string }) {
   )
 }
 
-// Horizontal project rail. The wheel-to-horizontal conversion lives on the modal
-// body (see Modal) so it fires wherever the cursor is; here we just track whether
-// there is more to scroll so we can show the slide hint.
+function Arrow({ dir }: { dir: 'left' | 'right' }) {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+      {dir === 'left' ? <path d="M15 18l-6-6 6-6" /> : <path d="M9 18l6-6-6-6" />}
+    </svg>
+  )
+}
+
+// Horizontal project rail with several independent ways to scroll, so it works
+// regardless of browser or input device: a visible draggable scrollbar, clickable
+// arrow buttons, click-and-drag panning, and (via the modal body) wheel-to-side.
 function TileRow({ missions, onPick }: { missions: Mission[]; onPick: (m: Mission) => void }) {
   const ref = useRef<HTMLDivElement>(null)
-  const [more, setMore] = useState(false)
+  const [canLeft, setCanLeft] = useState(false)
+  const [canRight, setCanRight] = useState(false)
+
   useEffect(() => {
     const el = ref.current
     if (!el) return
-    const update = () => setMore(el.scrollLeft + el.clientWidth < el.scrollWidth - 4)
+    const update = () => {
+      setCanLeft(el.scrollLeft > 4)
+      setCanRight(el.scrollLeft + el.clientWidth < el.scrollWidth - 4)
+    }
     update()
     el.addEventListener('scroll', update, { passive: true })
     window.addEventListener('resize', update)
@@ -174,13 +187,43 @@ function TileRow({ missions, onPick }: { missions: Mission[]; onPick: (m: Missio
     }
   }, [missions])
 
+  const nudge = (dx: number) => ref.current?.scrollBy({ left: dx, behavior: 'smooth' })
+
+  // Click-and-drag panning.
+  const drag = useRef({ down: false, startX: 0, startLeft: 0, moved: false })
+  const onPointerDown = (e: React.PointerEvent) => {
+    const el = ref.current
+    if (!el) return
+    drag.current = { down: true, startX: e.clientX, startLeft: el.scrollLeft, moved: false }
+  }
+  const onPointerMove = (e: React.PointerEvent) => {
+    const el = ref.current
+    if (!el || !drag.current.down) return
+    const dx = e.clientX - drag.current.startX
+    if (Math.abs(dx) > 4) drag.current.moved = true
+    el.scrollLeft = drag.current.startLeft - dx
+  }
+  const endDrag = () => { drag.current.down = false }
+
+  const arrowCls = 'absolute top-1/2 z-20 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full border shadow-md backdrop-blur transition hover:scale-105'
+  const arrowStyle = { borderColor: 'color-mix(in srgb, var(--text) 16%, transparent)', background: 'color-mix(in srgb, var(--surface) 92%, var(--text) 8%)', color: 'var(--accent)' } as const
+
   return (
     <div className="relative">
-      <div ref={ref} data-rail data-lenis-prevent className="-mx-1 mt-3 flex snap-x gap-5 overflow-x-auto overscroll-contain px-1 pb-3">
+      <div
+        ref={ref}
+        data-rail
+        data-lenis-prevent
+        onPointerDown={onPointerDown}
+        onPointerMove={onPointerMove}
+        onPointerUp={endDrag}
+        onPointerLeave={endDrag}
+        className="rail-scroll -mx-1 mt-3 flex cursor-grab snap-x gap-5 overflow-x-auto overscroll-contain px-1 pb-3 active:cursor-grabbing"
+      >
         {missions.map((m, idx) => (
           <button
             key={m.id}
-            onClick={() => onPick(m)}
+            onClick={() => { if (!drag.current.moved) onPick(m) }}
             className="group flex w-[248px] shrink-0 snap-start flex-col rounded-xl border p-4 text-left shadow-sm transition-all duration-200 hover:-translate-y-1 hover:shadow-lg"
             style={{
               borderColor: 'color-mix(in srgb, var(--text) 15%, transparent)',
@@ -205,19 +248,17 @@ function TileRow({ missions, onPick }: { missions: Mission[]; onPick: (m: Missio
           </button>
         ))}
       </div>
-      <AnimatePresence>
-        {more && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="pointer-events-none absolute bottom-3 right-0 top-0 flex w-20 items-center justify-end pr-1"
-            style={{ background: 'linear-gradient(90deg, transparent, var(--surface) 72%)' }}
-          >
-            <span className="font-mono text-[10px] tracking-widest" style={{ color: 'var(--accent)' }}>scroll →</span>
-          </motion.div>
-        )}
-      </AnimatePresence>
+
+      {canLeft && (
+        <button aria-label="Scroll left" onClick={() => nudge(-280)} className={`${arrowCls} left-1`} style={arrowStyle}>
+          <Arrow dir="left" />
+        </button>
+      )}
+      {canRight && (
+        <button aria-label="Scroll right" onClick={() => nudge(280)} className={`${arrowCls} right-1`} style={arrowStyle}>
+          <Arrow dir="right" />
+        </button>
+      )}
     </div>
   )
 }
