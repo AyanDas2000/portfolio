@@ -88,6 +88,7 @@ export const journey: Stop[] = [
         highlight: 'Prices tracked automatically, nothing slipping past.',
         debrief:
           'For Happy Wagon I built the pipeline that ran their e-commerce operations, and a tracker that watched Amazon for price drift and caught a moved price before a person would have. Small edges add up when you sell online.',
+        tech: ['Python', 'Selenium', 'automation'],
       },
       {
         id: 'primeloop-3',
@@ -95,15 +96,15 @@ export const journey: Stop[] = [
         highlight: 'Hours quietly handed back to teams that never saw the code.',
         debrief:
           'For other clients I built the unglamorous parts. Notification handling, reply routing, and an analyzer that pulled PRDs out of Asana and turned them into structured pages in Notion. Boring to describe. It saved people real time.',
-        tech: ['Asana', 'Notion'],
+        tech: ['n8n', 'Asana', 'Notion', 'webhooks'],
       },
       {
         id: 'primeloop-4',
         title: 'The first outreach engine',
         highlight: 'The rough draft of what became my main work.',
         debrief:
-          'The first time I built something that researched companies and reached out without a human driving it. It started on a no-code tool, moved to code and self-hosted infrastructure, and went through more iterations than I can count. Rough at first, but it was the seed of the platform I work on now. A partnerships agency found our two-person team on the back of it, and that turned into Outpilot.',
-        tech: ['no-code start', 'self-hosted'],
+          'The first time I built something that researched companies and reached out without a human driving it. It started in Make.com, moved to n8n and self-hosted infrastructure, and went through more iterations than I can count. Rough at first, but it was the seed of the platform I work on now. A partnerships agency found our two-person team on the back of it, and that turned into Outpilot.',
+        tech: ['Make.com', 'n8n', 'Python'],
       },
     ],
   },
@@ -151,7 +152,7 @@ export const stack: { label: string; items: string[] }[] = [
   { label: 'Languages', items: ['Python', 'JavaScript'] },
   {
     label: 'Automation (no-code / low-code)',
-    items: ['Make.com', 'Zapier', 'Lindy', 'self-hosted orchestration'],
+    items: ['n8n', 'Make.com', 'Zapier', 'Lindy'],
   },
   {
     label: 'APIs & data',

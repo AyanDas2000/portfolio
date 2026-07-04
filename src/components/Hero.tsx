@@ -63,8 +63,8 @@ export function Hero({ theme }: { theme: 'dark' | 'light' }) {
         }
 
   return (
-    <section className="relative">
-      <div className="mx-auto grid max-w-5xl grid-cols-1 items-center gap-10 px-6 pb-16 pt-20 sm:px-8 sm:pb-24 sm:pt-28 md:grid-cols-[1.15fr_auto]">
+    <section className="relative flex min-h-svh items-center">
+      <div className="mx-auto grid w-full max-w-5xl grid-cols-1 items-center gap-10 px-6 pb-16 pt-20 sm:px-8 sm:pb-20 sm:pt-24 md:grid-cols-[1.15fr_auto]">
         <div>
           <motion.p
             {...rise(0)}

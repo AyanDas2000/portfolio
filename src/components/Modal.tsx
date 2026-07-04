@@ -138,45 +138,86 @@ function ArtPanel({ id, tall = false }: { id?: string; tall?: boolean }) {
   )
 }
 
-// Horizontal project rail. A vertical wheel over the rail scrolls it sideways,
-// so no Shift key is needed; trackpad horizontal gestures still pass through.
+// Colored tool tag shown on project cards. Not rendered for Outpilot missions,
+// which carry no `tech` (their internal tools stay off the page).
+function ToolTag({ label, color }: { label: string; color: string }) {
+  return (
+    <span
+      className="rounded-md px-1.5 py-0.5 text-[10px] font-semibold leading-none"
+      style={{
+        color,
+        background: `color-mix(in srgb, ${color} 15%, transparent)`,
+        border: `1px solid color-mix(in srgb, ${color} 34%, transparent)`,
+      }}
+    >
+      {label}
+    </span>
+  )
+}
+
+// Horizontal project rail. The wheel-to-horizontal conversion lives on the modal
+// body (see Modal) so it fires wherever the cursor is; here we just track whether
+// there is more to scroll so we can show the slide hint.
 function TileRow({ missions, onPick }: { missions: Mission[]; onPick: (m: Mission) => void }) {
   const ref = useRef<HTMLDivElement>(null)
+  const [more, setMore] = useState(false)
   useEffect(() => {
     const el = ref.current
     if (!el) return
-    const onWheel = (e: WheelEvent) => {
-      if (el.scrollWidth <= el.clientWidth) return
-      if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) return
-      el.scrollLeft += e.deltaY
-      e.preventDefault()
+    const update = () => setMore(el.scrollLeft + el.clientWidth < el.scrollWidth - 4)
+    update()
+    el.addEventListener('scroll', update, { passive: true })
+    window.addEventListener('resize', update)
+    return () => {
+      el.removeEventListener('scroll', update)
+      window.removeEventListener('resize', update)
     }
-    el.addEventListener('wheel', onWheel, { passive: false })
-    return () => el.removeEventListener('wheel', onWheel)
   }, [missions])
 
   return (
-    <div ref={ref} data-lenis-prevent className="-mx-1 mt-3 flex snap-x gap-5 overflow-x-auto overscroll-contain px-1 pb-3">
-      {missions.map((m, idx) => (
-        <button
-          key={m.id}
-          onClick={() => onPick(m)}
-          className="group flex w-[248px] shrink-0 snap-start flex-col rounded-xl border p-4 text-left shadow-sm transition-all duration-200 hover:-translate-y-1 hover:shadow-lg"
-          style={{
-            borderColor: 'color-mix(in srgb, var(--text) 15%, transparent)',
-            borderLeft: `3px solid ${accentVar(idx)}`,
-            background: 'color-mix(in srgb, var(--surface) 90%, var(--text) 9%)',
-          }}
-        >
-          <ArtPanel id={m.id} />
-          <div className="mt-3 flex items-center justify-between font-mono text-[10px] tracking-widest">
-            <span style={{ color: m.status === 'LIVE' ? 'var(--accent)' : 'var(--faint)' }}>{m.status === 'LIVE' ? '● LIVE' : 'PROJECT'}</span>
-            <span className="opacity-0 transition-opacity group-hover:opacity-100" style={{ color: 'var(--accent)' }}>open →</span>
-          </div>
-          <h4 className="mt-1.5 text-[15px] font-semibold leading-tight" style={{ color: 'var(--text)' }}>{m.title}</h4>
-          <p className="mt-1.5 flex-1 text-[12.5px] leading-relaxed" style={{ color: 'var(--muted)' }}>{m.highlight}</p>
-        </button>
-      ))}
+    <div className="relative">
+      <div ref={ref} data-rail data-lenis-prevent className="-mx-1 mt-3 flex snap-x gap-5 overflow-x-auto overscroll-contain px-1 pb-3">
+        {missions.map((m, idx) => (
+          <button
+            key={m.id}
+            onClick={() => onPick(m)}
+            className="group flex w-[248px] shrink-0 snap-start flex-col rounded-xl border p-4 text-left shadow-sm transition-all duration-200 hover:-translate-y-1 hover:shadow-lg"
+            style={{
+              borderColor: 'color-mix(in srgb, var(--text) 15%, transparent)',
+              borderLeft: `3px solid ${accentVar(idx)}`,
+              background: 'color-mix(in srgb, var(--surface) 90%, var(--text) 9%)',
+            }}
+          >
+            <ArtPanel id={m.id} />
+            <div className="mt-3 flex items-center justify-between font-mono text-[10px] tracking-widest">
+              <span style={{ color: m.status === 'LIVE' ? 'var(--accent)' : 'var(--faint)' }}>{m.status === 'LIVE' ? '● LIVE' : 'PROJECT'}</span>
+              <span className="opacity-0 transition-opacity group-hover:opacity-100" style={{ color: 'var(--accent)' }}>open →</span>
+            </div>
+            <h4 className="mt-1.5 text-[15px] font-semibold leading-tight" style={{ color: 'var(--text)' }}>{m.title}</h4>
+            <p className="mt-1.5 flex-1 text-[12.5px] leading-relaxed" style={{ color: 'var(--muted)' }}>{m.highlight}</p>
+            {m.tech && (
+              <div className="mt-2.5 flex flex-wrap gap-1">
+                {m.tech.slice(0, 4).map((t, ti) => (
+                  <ToolTag key={t} label={t} color={accentVar(ti)} />
+                ))}
+              </div>
+            )}
+          </button>
+        ))}
+      </div>
+      <AnimatePresence>
+        {more && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="pointer-events-none absolute bottom-3 right-0 top-0 flex w-20 items-center justify-end pr-1"
+            style={{ background: 'linear-gradient(90deg, transparent, var(--surface) 72%)' }}
+          >
+            <span className="font-mono text-[10px] tracking-widest" style={{ color: 'var(--accent)' }}>scroll →</span>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   )
 }
@@ -184,6 +225,7 @@ function TileRow({ missions, onPick }: { missions: Mission[]; onPick: (m: Missio
 export function Modal({ data, onClose }: { data: ModalData | null; onClose: () => void }) {
   const [sel, setSel] = useState<Mission | null>(null)
   const [dir, setDir] = useState(1)
+  const bodyRef = useRef<HTMLDivElement>(null)
 
   const pick = (m: Mission) => { setDir(1); setSel(m) }
   const back = () => { setDir(-1); setSel(null) }
@@ -201,6 +243,26 @@ export function Modal({ data, onClose }: { data: ModalData | null; onClose: () =
       document.body.style.overflow = ''
     }
   }, [data, sel, onClose])
+
+  // One wheel handler on the whole modal body picks the axis for you: if the
+  // current view has a horizontal project rail, a plain scroll moves it sideways;
+  // otherwise the scroll falls through to the body's own vertical scroll. This
+  // fires wherever the cursor is inside the modal, so the folder rail scrolls
+  // reliably instead of only when the pointer is exactly over a card.
+  useEffect(() => {
+    if (!data) return
+    const el = bodyRef.current
+    if (!el) return
+    const onWheel = (e: WheelEvent) => {
+      const rail = el.querySelector('[data-rail]') as HTMLElement | null
+      if (!rail || rail.scrollWidth <= rail.clientWidth + 1) return // vertical view
+      if (Math.abs(e.deltaX) >= Math.abs(e.deltaY)) return // let trackpad h-swipes through
+      rail.scrollLeft += e.deltaY
+      e.preventDefault()
+    }
+    el.addEventListener('wheel', onWheel, { passive: false })
+    return () => el.removeEventListener('wheel', onWheel)
+  }, [data, sel])
 
   const viewKey = data?.kind === 'stop' ? (sel ? `d-${sel.id}` : 'folder') : 'item'
 
@@ -244,7 +306,7 @@ export function Modal({ data, onClose }: { data: ModalData | null; onClose: () =
               </button>
             </div>
 
-            <div data-lenis-prevent className="max-h-[76vh] overflow-y-auto overscroll-contain px-6 py-6">
+            <div ref={bodyRef} data-lenis-prevent className="max-h-[76vh] overflow-y-auto overscroll-contain px-6 py-6">
               <AnimatePresence mode="popLayout" initial={false}>
                 <motion.div
                   key={viewKey}
