@@ -9,10 +9,10 @@ export function Origin() {
     <Section className="pt-4!">
       <div className="mx-auto max-w-3xl">
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: false, margin: '-12%' }}
-          transition={{ duration: 0.7, ease: EASE }}
+          initial={{ opacity: 0, y: 46, scale: 0.96 }}
+          whileInView={{ opacity: 1, y: 0, scale: 1 }}
+          viewport={{ once: false, margin: '-18%' }}
+          transition={{ duration: 0.85, ease: EASE }}
         >
           <Glass bar glow className="p-7 sm:p-9">
             <p className="font-mono text-[11px] tracking-widest" style={{ color: 'var(--muted)' }}>

@@ -1,44 +1,140 @@
 import { useEffect, useState } from 'react'
 import { AnimatePresence, motion } from 'motion/react'
-import type { Mission, Stop } from '../data'
+import { artById, type Mission, type Stop } from '../data'
 import { Chip, LiveDot, accentVar } from './ui'
 
 export type ModalData =
   | { kind: 'stop'; stop: Stop }
-  | { kind: 'item'; title: string; body: string; tech?: string[] }
+  | { kind: 'item'; id?: string; title: string; body: string; tech?: string[] }
 
-/** A constructed "workflow" graphic. Placeholder art until real screenshots go in. */
-function WorkflowArt({ seed = 0, className = '' }: { seed?: number; className?: string }) {
-  const s = seed % 3
-  const paths = [
-    'M34 36 C 110 36, 110 96, 186 96 M34 36 C 130 66, 170 40, 250 52 M186 96 C 224 96, 242 66, 262 58',
-    'M40 90 C 110 90, 110 40, 180 40 M180 40 C 230 40, 240 80, 268 84 M40 90 C 120 110, 200 100, 258 96',
-    'M36 60 C 120 40, 150 96, 240 84 M36 60 C 110 80, 150 40, 250 48 M120 55 C 160 60, 180 80, 236 82',
-  ]
-  const nodes = [
-    [24, 26], [178, 86], [252, 44], [24, 80],
-  ] as const
-  return (
-    <svg viewBox="0 0 300 128" className={className} fill="none" aria-hidden preserveAspectRatio="xMidYMid slice">
-      <path d={paths[s]} stroke="color-mix(in srgb, var(--accent) 55%, transparent)" strokeWidth="1.5" strokeLinecap="round" />
-      {nodes.map(([x, y], i) => (
-        <g key={i}>
-          <rect x={x} y={y} width="52" height="26" rx="6" fill="color-mix(in srgb, var(--surface2) 90%, transparent)" stroke="color-mix(in srgb, var(--accent) 40%, transparent)" strokeWidth="1" />
-          <circle cx={x + 8} cy={y + 8} r="2.5" fill={`var(--c${(i % 3) + 1})`} />
-          <rect x={x + 14} y={y + 6} width="30" height="3" rx="1.5" fill="color-mix(in srgb, var(--muted) 60%, transparent)" />
-          <rect x={x + 14} y={y + 14} width="20" height="3" rx="1.5" fill="color-mix(in srgb, var(--muted) 35%, transparent)" />
+const C = { line: 'var(--line)', s2: 'color-mix(in srgb, var(--surface2) 88%, transparent)', mut: 'color-mix(in srgb, var(--muted) 55%, transparent)', a: 'var(--accent)', c1: 'var(--c1)', c2: 'var(--c2)', c3: 'var(--c3)' }
+
+function Art({ kind }: { kind: string }) {
+  let body: React.ReactNode = null
+  switch (kind) {
+    case 'scrape':
+      body = (
+        <>
+          <rect x="26" y="24" width="150" height="86" rx="8" fill={C.s2} stroke={C.line} />
+          <line x1="26" y1="42" x2="176" y2="42" stroke={C.line} />
+          <circle cx="36" cy="33" r="2.4" fill={C.c3} /><circle cx="45" cy="33" r="2.4" fill={C.mut} />
+          {[52, 62, 72, 82, 92].map((y, i) => <rect key={y} x="38" y={y} width={110 - i * 14} height="4" rx="2" fill={C.mut} />)}
+          <path d="M176 68 C 200 68, 214 68, 236 68" stroke={C.a} strokeWidth="1.6" markerEnd="" />
+          <path d="M230 63 L 238 68 L 230 73" stroke={C.a} strokeWidth="1.6" fill="none" />
+          <rect x="244" y="56" width="42" height="9" rx="3" fill={C.c1} opacity="0.8" />
+          <rect x="244" y="70" width="30" height="7" rx="3" fill={C.c1} opacity="0.4" />
+        </>
+      )
+      break
+    case 'data':
+      body = (
+        <>
+          <line x1="40" y1="102" x2="266" y2="102" stroke={C.line} />
+          {[[60, 44, C.c1], [96, 70, C.c2], [132, 34, C.c3], [168, 58, C.c1], [204, 80, C.c2], [240, 50, C.c3]].map(([x, h, c], i) => (
+            <rect key={i} x={x as number} y={102 - (h as number)} width="22" height={h as number} rx="3" fill={c as string} opacity="0.8" />
+          ))}
+        </>
+      )
+      break
+    case 'ai':
+      body = (
+        <>
+          {[[54, 34], [50, 96], [110, 26], [116, 104], [232, 40], [246, 92]].map(([x, y], i) => (
+            <g key={i}>
+              <line x1={x as number} y1={y as number} x2="150" y2="64" stroke={C.line} />
+              <circle cx={x as number} cy={y as number} r="4" fill={`var(--c${(i % 3) + 1})`} />
+            </g>
+          ))}
+          <circle cx="150" cy="64" r="20" fill="color-mix(in srgb, var(--accent) 14%, transparent)" stroke={C.a} />
+          <circle cx="150" cy="64" r="6" fill={C.a} />
+          <path d="M188 30 l2 5 5 2 -5 2 -2 5 -2 -5 -5 -2 5 -2z" fill={C.c1} opacity="0.8" />
+        </>
+      )
+      break
+    case 'voice':
+      body = (
+        <g>
+          {Array.from({ length: 22 }, (_, i) => {
+            const h = 8 + Math.abs(Math.sin(i * 0.7)) * 44
+            return <rect key={i} x={40 + i * 10} y={64 - h / 2} width="4" height={h} rx="2" fill={i % 3 === 0 ? C.a : C.c1} opacity="0.85" />
+          })}
         </g>
-      ))}
-    </svg>
-  )
+      )
+      break
+    case 'mobile':
+      body = (
+        <>
+          <rect x="116" y="18" width="56" height="92" rx="11" fill={C.s2} stroke={C.line} />
+          <rect x="124" y="28" width="40" height="62" rx="4" fill="color-mix(in srgb, var(--c1) 12%, transparent)" />
+          <circle cx="144" cy="100" r="3" fill={C.mut} />
+          {[16, 26, 36].map((r, i) => <path key={r} d={`M188 64 a ${r} ${r} 0 0 1 ${r * 0.7} -${r * 0.7}`} stroke={C.c1} strokeWidth="1.6" fill="none" opacity={0.8 - i * 0.2} transform={`rotate(-30 188 64)`} />)}
+          <circle cx="188" cy="64" r="3" fill={C.a} />
+        </>
+      )
+      break
+    case 'infra':
+      body = (
+        <>
+          {[34, 58, 82].map((y, i) => (
+            <g key={y}>
+              <rect x="40" y={y} width="220" height="18" rx="5" fill={C.s2} stroke={C.line} />
+              <circle cx="52" cy={y + 9} r="3" fill={`var(--c${(i % 3) + 1})`} />
+              {[70, 90, 110].map((x) => <rect key={x} x={x} y={y + 7} width="14" height="4" rx="2" fill={C.mut} />)}
+              <rect x="230" y={y + 6} width="20" height="6" rx="3" fill="color-mix(in srgb, var(--accent) 45%, transparent)" />
+            </g>
+          ))}
+        </>
+      )
+      break
+    case 'ecommerce':
+      body = (
+        <>
+          {[[54, 54], [116, 54], [178, 54]].map(([x, y], i) => (
+            <rect key={i} x={x as number} y={y as number} width="46" height="46" rx="6" fill={C.s2} stroke={C.line} />
+          ))}
+          {[54, 116, 178].map((x, i) => <rect key={x} x={x + 8} y="62" width="30" height="4" rx="2" fill={`var(--c${(i % 3) + 1})`} />)}
+          <path d="M236 40 l26 10 -10 26 -20 -8 -6 -18z" fill="color-mix(in srgb, var(--accent) 16%, transparent)" stroke={C.a} />
+          <circle cx="244" cy="52" r="3" fill={C.a} />
+        </>
+      )
+      break
+    case 'teach':
+      body = (
+        <>
+          <rect x="52" y="26" width="150" height="82" rx="6" fill={C.s2} stroke={C.line} />
+          {[42, 56, 70, 84].map((y, i) => <rect key={y} x="64" y={y} width={120 - i * 18} height="4" rx="2" fill={i === 0 ? C.a : C.mut} opacity={i === 0 ? 0.9 : 0.5} />)}
+          <circle cx="228" cy="66" r="9" fill="none" stroke={C.c2} strokeWidth="2" />
+          <path d="M218 108 q10 -20 20 0" stroke={C.c2} strokeWidth="2" fill="none" />
+        </>
+      )
+      break
+    default: // flow
+      body = (
+        <>
+          <path d="M40 40 C 110 40, 110 96, 180 96 M40 40 C 130 66, 170 40, 250 52 M180 96 C 224 96, 242 66, 262 58" stroke="color-mix(in srgb, var(--accent) 55%, transparent)" strokeWidth="1.5" strokeLinecap="round" fill="none" />
+          {[[24, 26], [176, 84], [250, 42], [24, 80]].map(([x, y], i) => (
+            <g key={i}>
+              <rect x={x as number} y={y as number} width="52" height="26" rx="6" fill={C.s2} stroke="color-mix(in srgb, var(--accent) 40%, transparent)" />
+              <circle cx={(x as number) + 8} cy={(y as number) + 8} r="2.5" fill={`var(--c${(i % 3) + 1})`} />
+              <rect x={(x as number) + 14} y={(y as number) + 6} width="30" height="3" rx="1.5" fill={C.mut} />
+              <rect x={(x as number) + 14} y={(y as number) + 14} width="20" height="3" rx="1.5" fill="color-mix(in srgb, var(--muted) 35%, transparent)" />
+            </g>
+          ))}
+        </>
+      )
+  }
+  return <svg viewBox="0 0 300 128" className="h-full w-full" fill="none" aria-hidden preserveAspectRatio="xMidYMid meet">{body}</svg>
 }
 
-const ArtPanel = ({ seed, tall = false }: { seed: number; tall?: boolean }) => (
-  <div className={`relative overflow-hidden rounded-lg border ${tall ? 'h-40' : 'h-24'}`} style={{ borderColor: 'var(--line)', background: 'color-mix(in srgb, var(--surface2) 45%, transparent)' }}>
-    <WorkflowArt seed={seed} className="h-full w-full opacity-90" />
-    <span className="absolute bottom-1.5 right-2 font-mono text-[8px] tracking-widest" style={{ color: 'var(--faint)' }}>SCHEMATIC</span>
-  </div>
-)
+function ArtPanel({ id, tall = false }: { id?: string; tall?: boolean }) {
+  const kind = (id && artById[id]) || 'flow'
+  return (
+    <div className={`relative overflow-hidden rounded-lg border ${tall ? 'h-40' : 'h-24'}`} style={{ borderColor: 'var(--line)', background: 'color-mix(in srgb, var(--surface2) 40%, transparent)' }}>
+      <Art kind={kind} />
+      <span className="absolute bottom-1.5 right-2 font-mono text-[8px] tracking-widest" style={{ color: 'var(--faint)' }}>SCHEMATIC</span>
+    </div>
+  )
+}
 
 export function Modal({ data, onClose }: { data: ModalData | null; onClose: () => void }) {
   const [sel, setSel] = useState<Mission | null>(null)
@@ -97,17 +193,17 @@ export function Modal({ data, onClose }: { data: ModalData | null; onClose: () =
               </button>
             </div>
 
-            <div className="max-h-[76vh] overflow-y-auto px-6 py-6">
+            <div data-lenis-prevent className="max-h-[76vh] overflow-y-auto overscroll-contain px-6 py-6">
               {data.kind === 'item' ? (
                 <>
-                  <ArtPanel seed={data.title.length} tall />
+                  <ArtPanel id={data.id} tall />
                   <h3 className="mt-5 text-2xl font-bold tracking-tight" style={{ color: 'var(--text)' }}>{data.title}</h3>
                   <p className="mt-3 text-[15px] leading-relaxed" style={{ color: 'var(--muted)' }}>{data.body}</p>
                   {data.tech && <div className="mt-5 flex flex-wrap gap-1.5">{data.tech.map((t, i) => <Chip key={t} label={t} color={accentVar(i)} />)}</div>}
                 </>
               ) : sel ? (
                 <>
-                  <ArtPanel seed={sel.title.length} tall />
+                  <ArtPanel id={sel.id} tall />
                   {sel.status === 'LIVE' && <div className="mt-4"><LiveDot /></div>}
                   <h3 className="mt-3 text-2xl font-bold tracking-tight" style={{ color: 'var(--text)' }}>{sel.title}</h3>
                   <p className="mt-2 text-[13px] font-medium" style={{ color: 'var(--accent)' }}>{sel.highlight}</p>
@@ -119,15 +215,15 @@ export function Modal({ data, onClose }: { data: ModalData | null; onClose: () =
                   <p className="text-[13px]" style={{ color: 'var(--muted)' }}>{data.stop.role} · {data.stop.when}</p>
                   <p className="mt-2 text-[14px] italic leading-relaxed" style={{ color: 'var(--muted)' }}>{data.stop.blurb}</p>
                   <p className="mt-6 font-mono text-[11px] tracking-widest" style={{ color: 'var(--faint)' }}>{data.stop.missions.length} PROJECTS</p>
-                  <div className="-mx-1 mt-3 flex snap-x gap-4 overflow-x-auto px-1 pb-3">
-                    {data.stop.missions.map((m, i) => (
+                  <div data-lenis-prevent className="-mx-1 mt-3 flex snap-x gap-4 overflow-x-auto overscroll-contain px-1 pb-3">
+                    {data.stop.missions.map((m) => (
                       <button
                         key={m.id}
                         onClick={() => setSel(m)}
                         className="group flex w-[240px] shrink-0 snap-start flex-col rounded-xl border p-4 text-left transition-all duration-200 hover:-translate-y-1"
                         style={{ borderColor: 'var(--line)', background: 'color-mix(in srgb, var(--surface2) 45%, transparent)' }}
                       >
-                        <ArtPanel seed={i + m.title.length} />
+                        <ArtPanel id={m.id} />
                         <div className="mt-3 flex items-center justify-between font-mono text-[10px] tracking-widest" style={{ color: 'var(--faint)' }}>
                           <span>{m.status === 'LIVE' ? 'LIVE' : 'PROJECT'}</span>
                           <span className="opacity-0 transition-opacity group-hover:opacity-100" style={{ color: 'var(--accent)' }}>open →</span>

@@ -137,7 +137,7 @@ export function Journey() {
               stop={stop}
               side={i % 2 === 0 ? 'left' : 'right'}
               onOpenStop={(s) => setModal({ kind: 'stop', stop: s })}
-              onOpenBranch={(b) => setModal({ kind: 'item', title: b.title, body: b.body, tech: b.tech })}
+              onOpenBranch={(b) => setModal({ kind: 'item', id: b.id, title: b.title, body: b.body, tech: b.tech })}
             />
           ))}
         </div>

@@ -292,3 +292,23 @@ export const recognition = {
   note: 'Public praise for the Outpilot work. I built and ran the campaign it was written about.',
   url: '', // add the LinkedIn post link if you want it clickable
 }
+
+// Which schematic art each project/side-quest shows. Keyed by mission/branch id.
+export const artById: Record<string, string> = {
+  'resgov-1': 'scrape',
+  'primeloop-1': 'flow',
+  'primeloop-2': 'ecommerce',
+  'primeloop-3': 'infra',
+  'primeloop-4': 'ai',
+  'outpilot-1': 'infra',
+  'outpilot-2': 'ai',
+  'b-teach': 'teach',
+  'b-ml': 'data',
+  'b-data': 'data',
+  'b-scrape': 'scrape',
+  'b-analyst': 'ai',
+  'b-jarvis': 'voice',
+  'b-support': 'flow',
+  'b-exp': 'data',
+  'b-moto': 'mobile',
+}

@@ -1,5 +1,5 @@
 import { motion } from 'motion/react'
-import { clients, recognition } from '../data'
+import { clients } from '../data'
 import { Glass, Section, SectionHead } from './ui'
 
 const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1]
@@ -45,25 +45,6 @@ export function Clients() {
           ))}
         </div>
 
-        <motion.figure
-          initial={{ opacity: 0, y: 28 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={VIEW}
-          transition={{ duration: 0.6, ease: EASE }}
-          className="mx-auto mt-10 max-w-3xl"
-        >
-          <Glass glow className="p-7 text-center sm:p-9">
-            <blockquote className="text-xl font-medium italic leading-snug sm:text-2xl" style={{ color: 'var(--text)' }}>
-              "{recognition.quote}"
-            </blockquote>
-            <figcaption className="mt-5 font-mono text-[12px] tracking-wide" style={{ color: 'var(--muted)' }}>
-              {recognition.author} · {recognition.authorRole}
-            </figcaption>
-            <p className="mx-auto mt-4 max-w-md text-[12.5px] leading-relaxed" style={{ color: 'var(--faint)' }}>
-              {recognition.note}
-            </p>
-          </Glass>
-        </motion.figure>
       </div>
     </Section>
   )
