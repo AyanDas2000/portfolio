@@ -102,8 +102,8 @@ export const journey: Stop[] = [
         title: 'The first outreach engine',
         highlight: 'The rough draft of what became my main work.',
         debrief:
-          'The first time I built something that researched companies and reached out without a human driving it. It started in Make.com, moved to n8n, and went through more iterations than I can count. Rough at first, but it was the seed of the platform I work on now. A partnerships agency found our two-person team on the back of it, and that turned into Outpilot.',
-        tech: ['Make.com', 'n8n'],
+          'The first time I built something that researched companies and reached out without a human driving it. It started on a no-code tool, moved to code and self-hosted infrastructure, and went through more iterations than I can count. Rough at first, but it was the seed of the platform I work on now. A partnerships agency found our two-person team on the back of it, and that turned into Outpilot.',
+        tech: ['no-code start', 'self-hosted'],
       },
     ],
   },
@@ -151,7 +151,7 @@ export const stack: { label: string; items: string[] }[] = [
   { label: 'Languages', items: ['Python', 'JavaScript'] },
   {
     label: 'Automation (no-code / low-code)',
-    items: ['n8n', 'Make.com', 'Zapier', 'Lindy'],
+    items: ['Make.com', 'Zapier', 'Lindy', 'self-hosted orchestration'],
   },
   {
     label: 'APIs & data',
@@ -169,7 +169,7 @@ export const stack: { label: string; items: string[] }[] = [
   {
     label: 'Backend & infra',
     items: [
-      'self-hosted servers (AWS, Hetzner)',
+      'self-hosted servers (AWS, bare-metal)',
       'Redis',
       'Docker',
       'serverless edge functions',

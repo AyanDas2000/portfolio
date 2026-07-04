@@ -1,7 +1,9 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'motion/react'
 import { artById, type Mission, type Stop } from '../data'
 import { Chip, LiveDot, accentVar } from './ui'
+
+const SLIDE = { duration: 0.28, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }
 
 export type ModalData =
   | { kind: 'stop'; stop: Stop }
@@ -129,21 +131,68 @@ function Art({ kind }: { kind: string }) {
 function ArtPanel({ id, tall = false }: { id?: string; tall?: boolean }) {
   const kind = (id && artById[id]) || 'flow'
   return (
-    <div className={`relative overflow-hidden rounded-lg border ${tall ? 'h-40' : 'h-24'}`} style={{ borderColor: 'var(--line)', background: 'color-mix(in srgb, var(--surface2) 40%, transparent)' }}>
+    <div className={`relative overflow-hidden rounded-lg border ${tall ? 'h-40' : 'h-24'}`} style={{ borderColor: 'color-mix(in srgb, var(--text) 12%, transparent)', background: 'color-mix(in srgb, var(--bg) 55%, transparent)' }}>
       <Art kind={kind} />
       <span className="absolute bottom-1.5 right-2 font-mono text-[8px] tracking-widest" style={{ color: 'var(--faint)' }}>SCHEMATIC</span>
     </div>
   )
 }
 
+// Horizontal project rail. A vertical wheel over the rail scrolls it sideways,
+// so no Shift key is needed; trackpad horizontal gestures still pass through.
+function TileRow({ missions, onPick }: { missions: Mission[]; onPick: (m: Mission) => void }) {
+  const ref = useRef<HTMLDivElement>(null)
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+    const onWheel = (e: WheelEvent) => {
+      if (el.scrollWidth <= el.clientWidth) return
+      if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) return
+      el.scrollLeft += e.deltaY
+      e.preventDefault()
+    }
+    el.addEventListener('wheel', onWheel, { passive: false })
+    return () => el.removeEventListener('wheel', onWheel)
+  }, [missions])
+
+  return (
+    <div ref={ref} data-lenis-prevent className="-mx-1 mt-3 flex snap-x gap-5 overflow-x-auto overscroll-contain px-1 pb-3">
+      {missions.map((m, idx) => (
+        <button
+          key={m.id}
+          onClick={() => onPick(m)}
+          className="group flex w-[248px] shrink-0 snap-start flex-col rounded-xl border p-4 text-left shadow-sm transition-all duration-200 hover:-translate-y-1 hover:shadow-lg"
+          style={{
+            borderColor: 'color-mix(in srgb, var(--text) 15%, transparent)',
+            borderLeft: `3px solid ${accentVar(idx)}`,
+            background: 'color-mix(in srgb, var(--surface) 90%, var(--text) 9%)',
+          }}
+        >
+          <ArtPanel id={m.id} />
+          <div className="mt-3 flex items-center justify-between font-mono text-[10px] tracking-widest">
+            <span style={{ color: m.status === 'LIVE' ? 'var(--accent)' : 'var(--faint)' }}>{m.status === 'LIVE' ? '● LIVE' : 'PROJECT'}</span>
+            <span className="opacity-0 transition-opacity group-hover:opacity-100" style={{ color: 'var(--accent)' }}>open →</span>
+          </div>
+          <h4 className="mt-1.5 text-[15px] font-semibold leading-tight" style={{ color: 'var(--text)' }}>{m.title}</h4>
+          <p className="mt-1.5 flex-1 text-[12.5px] leading-relaxed" style={{ color: 'var(--muted)' }}>{m.highlight}</p>
+        </button>
+      ))}
+    </div>
+  )
+}
+
 export function Modal({ data, onClose }: { data: ModalData | null; onClose: () => void }) {
   const [sel, setSel] = useState<Mission | null>(null)
+  const [dir, setDir] = useState(1)
 
-  useEffect(() => setSel(null), [data])
+  const pick = (m: Mission) => { setDir(1); setSel(m) }
+  const back = () => { setDir(-1); setSel(null) }
+
+  useEffect(() => { setSel(null); setDir(1) }, [data])
   useEffect(() => {
     if (!data) return
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') sel ? setSel(null) : onClose()
+      if (e.key === 'Escape') sel ? back() : onClose()
     }
     document.addEventListener('keydown', onKey)
     document.body.style.overflow = 'hidden'
@@ -152,6 +201,8 @@ export function Modal({ data, onClose }: { data: ModalData | null; onClose: () =
       document.body.style.overflow = ''
     }
   }, [data, sel, onClose])
+
+  const viewKey = data?.kind === 'stop' ? (sel ? `d-${sel.id}` : 'folder') : 'item'
 
   return (
     <AnimatePresence>
@@ -180,7 +231,7 @@ export function Modal({ data, onClose }: { data: ModalData | null; onClose: () =
 
             <div className="flex items-center justify-between border-b px-6 py-4" style={{ borderColor: 'var(--line)' }}>
               {data.kind === 'stop' && sel ? (
-                <button onClick={() => setSel(null)} className="font-mono text-[11px] tracking-widest transition-opacity hover:opacity-70" style={{ color: 'var(--accent)' }}>
+                <button onClick={back} className="font-mono text-[11px] tracking-widest transition-opacity hover:opacity-70" style={{ color: 'var(--accent)' }}>
                   ← back to projects
                 </button>
               ) : (
@@ -194,47 +245,42 @@ export function Modal({ data, onClose }: { data: ModalData | null; onClose: () =
             </div>
 
             <div data-lenis-prevent className="max-h-[76vh] overflow-y-auto overscroll-contain px-6 py-6">
-              {data.kind === 'item' ? (
-                <>
-                  <ArtPanel id={data.id} tall />
-                  <h3 className="mt-5 text-2xl font-bold tracking-tight" style={{ color: 'var(--text)' }}>{data.title}</h3>
-                  <p className="mt-3 text-[15px] leading-relaxed" style={{ color: 'var(--muted)' }}>{data.body}</p>
-                  {data.tech && <div className="mt-5 flex flex-wrap gap-1.5">{data.tech.map((t, i) => <Chip key={t} label={t} color={accentVar(i)} />)}</div>}
-                </>
-              ) : sel ? (
-                <>
-                  <ArtPanel id={sel.id} tall />
-                  {sel.status === 'LIVE' && <div className="mt-4"><LiveDot /></div>}
-                  <h3 className="mt-3 text-2xl font-bold tracking-tight" style={{ color: 'var(--text)' }}>{sel.title}</h3>
-                  <p className="mt-2 text-[13px] font-medium" style={{ color: 'var(--accent)' }}>{sel.highlight}</p>
-                  <p className="mt-4 text-[15px] leading-relaxed" style={{ color: 'var(--muted)' }}>{sel.debrief}</p>
-                  {sel.tech && <div className="mt-5 flex flex-wrap gap-1.5">{sel.tech.map((t, i) => <Chip key={t} label={t} color={accentVar(i)} />)}</div>}
-                </>
-              ) : (
-                <>
-                  <p className="text-[13px]" style={{ color: 'var(--muted)' }}>{data.stop.role} · {data.stop.when}</p>
-                  <p className="mt-2 text-[14px] italic leading-relaxed" style={{ color: 'var(--muted)' }}>{data.stop.blurb}</p>
-                  <p className="mt-6 font-mono text-[11px] tracking-widest" style={{ color: 'var(--faint)' }}>{data.stop.missions.length} PROJECTS</p>
-                  <div data-lenis-prevent className="-mx-1 mt-3 flex snap-x gap-4 overflow-x-auto overscroll-contain px-1 pb-3">
-                    {data.stop.missions.map((m) => (
-                      <button
-                        key={m.id}
-                        onClick={() => setSel(m)}
-                        className="group flex w-[240px] shrink-0 snap-start flex-col rounded-xl border p-4 text-left transition-all duration-200 hover:-translate-y-1"
-                        style={{ borderColor: 'var(--line)', background: 'color-mix(in srgb, var(--surface2) 45%, transparent)' }}
-                      >
-                        <ArtPanel id={m.id} />
-                        <div className="mt-3 flex items-center justify-between font-mono text-[10px] tracking-widest" style={{ color: 'var(--faint)' }}>
-                          <span>{m.status === 'LIVE' ? 'LIVE' : 'PROJECT'}</span>
-                          <span className="opacity-0 transition-opacity group-hover:opacity-100" style={{ color: 'var(--accent)' }}>open →</span>
-                        </div>
-                        <h4 className="mt-1.5 text-[15px] font-semibold leading-tight" style={{ color: 'var(--text)' }}>{m.title}</h4>
-                        <p className="mt-1.5 flex-1 text-[12.5px] leading-relaxed" style={{ color: 'var(--muted)' }}>{m.highlight}</p>
-                      </button>
-                    ))}
-                  </div>
-                </>
-              )}
+              <AnimatePresence mode="popLayout" initial={false}>
+                <motion.div
+                  key={viewKey}
+                  initial={{ opacity: 0, x: dir * 34 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0 }}
+                  transition={SLIDE}
+                >
+                  {data.kind === 'item' ? (
+                    <>
+                      <ArtPanel id={data.id} tall />
+                      <h3 className="mt-5 text-2xl font-bold tracking-tight" style={{ color: 'var(--text)' }}>{data.title}</h3>
+                      <p className="mt-3 text-[15px] leading-relaxed" style={{ color: 'var(--muted)' }}>{data.body}</p>
+                      {data.tech && <div className="mt-5 flex flex-wrap gap-1.5">{data.tech.map((t, i) => <Chip key={t} label={t} color={accentVar(i)} />)}</div>}
+                    </>
+                  ) : sel ? (
+                    <>
+                      <ArtPanel id={sel.id} tall />
+                      {sel.status === 'LIVE' && <div className="mt-4"><LiveDot /></div>}
+                      <h3 className="mt-3 text-2xl font-bold tracking-tight" style={{ color: 'var(--text)' }}>{sel.title}</h3>
+                      <p className="mt-2 text-[13px] font-medium" style={{ color: 'var(--accent)' }}>{sel.highlight}</p>
+                      <p className="mt-4 text-[15px] leading-relaxed" style={{ color: 'var(--muted)' }}>{sel.debrief}</p>
+                      {sel.tech && <div className="mt-5 flex flex-wrap gap-1.5">{sel.tech.map((t, i) => <Chip key={t} label={t} color={accentVar(i)} />)}</div>}
+                    </>
+                  ) : (
+                    <>
+                      <p className="text-[13px]" style={{ color: 'var(--muted)' }}>{data.stop.role} · {data.stop.when}</p>
+                      <p className="mt-2 text-[14px] italic leading-relaxed" style={{ color: 'var(--muted)' }}>{data.stop.blurb}</p>
+                      <p className="mt-6 font-mono text-[11px] tracking-widest" style={{ color: 'var(--faint)' }}>
+                        {data.stop.missions.length} PROJECT{data.stop.missions.length === 1 ? '' : 'S'}
+                      </p>
+                      <TileRow missions={data.stop.missions} onPick={pick} />
+                    </>
+                  )}
+                </motion.div>
+              </AnimatePresence>
             </div>
           </motion.div>
         </motion.div>

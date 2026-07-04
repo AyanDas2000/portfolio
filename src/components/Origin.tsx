@@ -1,19 +1,23 @@
-import { motion } from 'motion/react'
+import { useRef } from 'react'
+import { motion, useScroll, useTransform } from 'motion/react'
 import { origin } from '../data'
 import { Glass, Section } from './ui'
 
-const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1]
-
 export function Origin() {
+  const ref = useRef<HTMLDivElement>(null)
+  // Scroll-linked reveal: the block animates continuously as it moves through the
+  // viewport, and reverses when you scroll back up. This is deliberately NOT a
+  // whileInView entrance, because Origin sits high on the page and a one-shot
+  // reveal would fire on load before the reader ever scrolls to it.
+  const { scrollYProgress } = useScroll({ target: ref, offset: ['start 0.92', 'center 0.58'] })
+  const opacity = useTransform(scrollYProgress, [0, 1], [0, 1])
+  const y = useTransform(scrollYProgress, [0, 1], [64, 0])
+  const scale = useTransform(scrollYProgress, [0, 1], [0.955, 1])
+
   return (
     <Section className="pt-4!">
       <div className="mx-auto max-w-3xl">
-        <motion.div
-          initial={{ opacity: 0, y: 46, scale: 0.96 }}
-          whileInView={{ opacity: 1, y: 0, scale: 1 }}
-          viewport={{ once: false, margin: '-18%' }}
-          transition={{ duration: 0.85, ease: EASE }}
-        >
+        <motion.div ref={ref} style={{ opacity, y, scale }}>
           <Glass bar glow className="p-7 sm:p-9">
             <p className="font-mono text-[11px] tracking-widest" style={{ color: 'var(--muted)' }}>
               ORIGIN

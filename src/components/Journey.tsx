@@ -31,7 +31,7 @@ function NodeCard({ stop, onOpen }: { stop: Stop; onOpen: (s: Stop) => void }) {
         <p className="mt-1 font-mono text-[12px]" style={{ color: 'var(--accent)' }}>{stop.role}</p>
         <p className="mt-2.5 text-[13.5px] leading-relaxed" style={{ color: 'var(--muted)' }}>{stop.blurb}</p>
         <div className="mt-4 inline-flex items-center gap-2.5 font-mono text-[11px] tracking-wider" style={{ color: 'var(--accent)' }}>
-          <span className="rounded-full border px-2 py-0.5" style={{ borderColor: 'var(--line)' }}>{stop.missions.length} projects</span>
+          <span className="rounded-full border px-2 py-0.5" style={{ borderColor: 'var(--line)' }}>{stop.missions.length} project{stop.missions.length === 1 ? '' : 's'}</span>
           <span className="transition-transform group-hover:translate-x-1">open →</span>
         </div>
       </Glass>
