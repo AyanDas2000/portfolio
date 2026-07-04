@@ -57,8 +57,8 @@ type Theme = 'dark' | 'light'
 
 export function useTheme(): [Theme, () => void] {
   const [theme, setTheme] = useState<Theme>(() => {
-    if (typeof document === 'undefined') return 'dark'
-    return (document.documentElement.getAttribute('data-theme') as Theme) || 'dark'
+    if (typeof document === 'undefined') return 'light'
+    return (document.documentElement.getAttribute('data-theme') as Theme) || 'light'
   })
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme)

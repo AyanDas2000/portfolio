@@ -1,4 +1,5 @@
 import { useEffect, type MouseEvent } from 'react'
+import Lenis from 'lenis'
 import { Ambient } from './components/Ambient'
 import { Nav } from './components/Nav'
 import { Hero } from './components/Hero'
@@ -22,6 +23,22 @@ function App() {
   useEffect(() => {
     const style = 'color:#37C6E0;font-family:monospace;font-size:12px'
     consoleLines.forEach((line) => console.log(`%c${line}`, style))
+  }, [])
+
+  // Weighted smooth scroll (Lenis). Skipped for reduced-motion users.
+  useEffect(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+    const lenis = new Lenis({ duration: 1.15, wheelMultiplier: 0.9 })
+    let raf = 0
+    const loop = (t: number) => {
+      lenis.raf(t)
+      raf = requestAnimationFrame(loop)
+    }
+    raf = requestAnimationFrame(loop)
+    return () => {
+      cancelAnimationFrame(raf)
+      lenis.destroy()
+    }
   }, [])
 
   function onMove(e: MouseEvent<HTMLDivElement>) {
