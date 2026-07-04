@@ -10,7 +10,7 @@ export const links = {
 export const nav = [
   { id: 'journey', label: 'Journey' },
   { id: 'craft', label: 'Craft' },
-  { id: 'beyond', label: 'Beyond' },
+  { id: 'about', label: 'About' },
 ]
 
 // 1. Hero + 2. Soul
@@ -245,3 +245,23 @@ export const consoleLines = [
   "> you opened the console. that means you're curious, which was the whole point.",
   '> reach me: ayan11112000@gmail.com. and for the record, the toad sage had it right.',
 ]
+
+// Side-quest branches that hang off the main path at each era.
+export type Branch = { id: string; title: string; body: string; tech?: string[] }
+export const branchesByStop: Record<string, Branch[]> = {
+  resgov: [
+    { id: 'b-teach', title: 'Teaching', body: "I've tutored on the side for years, teaching people the things I once had to teach myself. It taught me that if you can't explain a thing simply, you don't really have it." },
+    { id: 'b-ml', title: 'ML notebooks', body: 'Notebooks where I first pushed on machine learning, the place the math started meeting code.' },
+    { id: 'b-data', title: 'Data analysis', body: 'Pulling datasets apart to find what they were actually saying, before the answer was obvious.' },
+    { id: 'b-scrape', title: 'Scraping experiments', body: 'Early scrapers and small automations. Rough, but the muscle that led to everything after.', tech: ['Python', 'Selenium'] },
+  ],
+  primeloop: [
+    { id: 'b-analyst', title: 'AI Analyst', body: 'A build that reads a dataset and tells you what is actually going on in it, so analysis starts from questions instead of spreadsheets.' },
+    { id: 'b-jarvis', title: 'JARVIS', body: 'A voice assistant built from scratch. Yes, named after that one. I wanted to see how far I could get building my own from nothing.', tech: ['Python', 'Whisper'] },
+    { id: 'b-exp', title: 'The experiments', body: 'Machine-learning notebooks, data-analysis projects, scrapers, a drawer of half-built ideas from the years before the real work.' },
+  ],
+  outpilot: [
+    { id: 'b-moto', title: 'Motorcycle app', body: 'My bike ships with a companion app from the manufacturer, but it is laggy and half-broken. I reverse-engineered it, stripped it to the frame, and rebuilt it sleek. Now my phone talks to my motorcycle properly.', tech: ['Kotlin', 'BLE'] },
+    { id: 'b-support', title: 'Support tooling', body: 'A ticket viewer and an auth bridge I built to make messy support queues legible.' },
+  ],
+}
