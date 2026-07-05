@@ -62,8 +62,8 @@ export const journey: Stop[] = [
         title: 'First contact with data',
         highlight: 'Scraped and structured data for 600,000+ panchayats.',
         debrief:
-          "My first real job with data. I built a pipeline that scraped and organized records for over six lakh panchayats, using Python, BeautifulSoup, Selenium and Requests, and leaned on the early GPT models to make the code faster and harder to break. First time I watched a machine finish an afternoon of someone's work in seconds. I was hooked.",
-        tech: ['Python', 'BeautifulSoup', 'Selenium', 'Requests', 'GPT'],
+          "My first real job with data. I built a pipeline that scraped and organized records for over six lakh panchayats, using Python, BeautifulSoup, Selenium and Requests, and leaned on ChatGPT to make the code faster and harder to break. First time I watched a machine finish an afternoon of someone's work in seconds. I was hooked.",
+        tech: ['Python', 'BeautifulSoup', 'Selenium', 'Requests', 'ChatGPT'],
       },
     ],
   },
@@ -80,7 +80,7 @@ export const journey: Stop[] = [
         title: 'A library of 250+ workflows',
         highlight: '250+ reusable templates, plus the guides to run them.',
         debrief:
-          "I built more than 250 automation templates for a US AI-agent platform, along with the written guides that made them usable by people who don't code. Working automation, straight out of the box. Which platform, and what it powers, stays with the client.",
+          "I built more than 250 automation templates for a client's own platform, along with the written guides that made them usable by people who don't code. Working automation, straight out of the box. Which platform, and what it powers, stays with the client.",
       },
       {
         id: 'primeloop-2',
@@ -88,7 +88,15 @@ export const journey: Stop[] = [
         highlight: 'Prices tracked automatically, nothing slipping past.',
         debrief:
           'For Happy Wagon I built the pipeline that ran their e-commerce operations, and a tracker that watched Amazon for price drift and caught a moved price before a person would have. Small edges add up when you sell online.',
-        tech: ['Python', 'Selenium', 'automation'],
+        tech: ['n8n', 'Scrapy', 'AWS Lambda', 'Airtable', 'JavaScript'],
+      },
+      {
+        id: 'primeloop-5',
+        title: 'Every order, tracked to the door',
+        highlight: 'End to end tracking across three Shopify stores, with an AI that answers for it.',
+        debrief:
+          'A layered system for Happy Wagon that followed every order across three Shopify stores, from the moment it was placed all the way to delivered, and through returns when it came to that. Not one workflow but a set of them, some live and some sequential, kept deduplicated so the picture was always whole and always current, and mapped back to Airtable. On top of that I built an assistant that read the Airtable base and answered "where is my order" in a clean, consistent format, and a private helpdesk extension that drafted customer replies from the order data and the team\'s guidance, with the option to tune a reply by hand or hand it back to the model. Big and layered. It joined more moving parts than most things ever need to.',
+        tech: ['Shopify', 'n8n', 'Airtable', 'webhooks', 'LLM', 'JavaScript'],
       },
       {
         id: 'primeloop-3',
@@ -96,15 +104,15 @@ export const journey: Stop[] = [
         highlight: 'Hours quietly handed back to teams that never saw the code.',
         debrief:
           'For other clients I built the unglamorous parts. Notification handling, reply routing, and an analyzer that pulled PRDs out of Asana and turned them into structured pages in Notion. Boring to describe. It saved people real time.',
-        tech: ['n8n', 'Asana', 'Notion', 'webhooks'],
+        tech: ['n8n', 'Asana', 'Notion', 'webhooks', 'JavaScript'],
       },
       {
         id: 'primeloop-4',
         title: 'The first outreach engine',
         highlight: 'The rough draft of what became my main work.',
         debrief:
-          'The first time I built something that researched companies and reached out without a human driving it. It started in Make.com, moved to n8n and self-hosted infrastructure, and went through more iterations than I can count. Rough at first, but it was the seed of the platform I work on now. A partnerships agency found our two-person team on the back of it, and that turned into Outpilot.',
-        tech: ['Make.com', 'n8n', 'Python'],
+          'The first time I built something that researched companies and reached out without a human driving it. It started in Make.com, moved to n8n and self-hosted infrastructure, and went through more iterations than I can count. I ran early campaigns on it too, internal and external, including one for Premier Intros. Rough at first, but it was the seed of the platform I work on now. A partnerships agency found our two-person team on the back of it, and that turned into Outpilot.',
+        tech: ['Make.com', 'n8n', 'RapidAPI', 'JavaScript'],
       },
     ],
   },
@@ -128,10 +136,10 @@ export const journey: Stop[] = [
       {
         id: 'outpilot-2',
         title: 'The campaigns',
-        highlight: 'Live campaigns for real partners, booking real meetings.',
+        highlight: 'Well over a dozen live campaigns, booking real meetings.',
         status: 'LIVE',
         debrief:
-          'On top of that framework I build and run campaigns for specific partners, including Brooklyn Pickleball and Brasil Rugby. A campaign that used to take a month to stand up now ships in a few days, and a good one can book several meetings in a week. The rest of the roster stays off the page.',
+          'This is the half of the job people see. I run outreach campaigns end to end: the lead generation and company prospecting are mine, and I tune the prompts and the email engineering so the whole thing holds up at scale. The words come from people who write for a living; I make the machine deliver them right. Well over a dozen campaigns have gone out now, across sponsorship, partnership and B2B, for partners including Brooklyn Pickleball, Brasil Rugby and The Sponsorship Guy, alongside a run of others I cannot name and demos that reached some of the biggest names in world sport. A campaign that used to take a month to stand up now ships in days, and a good one books several meetings in a week. Most of the roster stays off the page.',
       },
     ],
   },
@@ -149,7 +157,7 @@ export const craft = {
 
 // 6. The Stack
 export const stack: { label: string; items: string[] }[] = [
-  { label: 'Languages', items: ['Python', 'JavaScript'] },
+  { label: 'Languages', items: ['Python', 'JavaScript', 'R'] },
   {
     label: 'Automation (no-code / low-code)',
     items: ['n8n', 'Make.com', 'Zapier', 'Lindy'],
@@ -168,18 +176,24 @@ export const stack: { label: string; items: string[] }[] = [
     ],
   },
   {
+    label: 'Data & notebooks',
+    items: ['Jupyter', 'Google Colab', 'Anaconda', 'pandas', 'NumPy', 'scikit-learn', 'Excel', 'Tableau', 'Power BI'],
+  },
+  {
     label: 'Backend & infra',
     items: [
       'self-hosted servers (AWS, Hetzner)',
+      'AWS Lambda',
       'Redis',
       'Docker',
       'serverless edge functions',
       'Supabase',
       'PostgreSQL',
       'Airtable',
+      'Shopify',
     ],
   },
-  { label: 'Scraping', items: ['BeautifulSoup', 'Selenium', 'anti-bot handling'] },
+  { label: 'Scraping', items: ['BeautifulSoup', 'Selenium', 'Scrapy', 'Requests', 'ScrapingBee', 'anti-bot handling'] },
 ]
 
 // 7. Side Quests
@@ -254,18 +268,17 @@ export type Branch = { id: string; title: string; body: string; tech?: string[] 
 export const branchesByStop: Record<string, Branch[]> = {
   resgov: [
     { id: 'b-teach', title: 'Teaching', body: "I've tutored on the side for years, teaching people the things I once had to teach myself. It taught me that if you can't explain a thing simply, you don't really have it." },
-    { id: 'b-ml', title: 'ML notebooks', body: 'Notebooks where I first pushed on machine learning, the place the math started meeting code.' },
-    { id: 'b-data', title: 'Data analysis', body: 'Pulling datasets apart to find what they were actually saying, before the answer was obvious.' },
-    { id: 'b-scrape', title: 'Scraping experiments', body: 'Early scrapers and small automations. Rough, but the muscle that led to everything after.', tech: ['Python', 'Selenium'] },
+    { id: 'b-ml', title: 'ML notebooks', body: 'Notebooks where I first pushed on machine learning, the place the math started meeting code. Python and R, run in Jupyter and Colab.', tech: ['Python', 'R', 'Jupyter', 'scikit-learn', 'pandas', 'NumPy'] },
+    { id: 'b-data', title: 'Data analysis', body: 'Pulling datasets apart to find what they were actually saying, before the answer was obvious. Whatever tool fit the question, from a spreadsheet to a notebook to a dashboard.', tech: ['Excel', 'Python', 'R', 'Tableau', 'Power BI', 'Jupyter'] },
+    { id: 'b-scrape', title: 'Scraping experiments', body: 'Early scrapers and small automations. Rough, but the muscle that led to everything after.', tech: ['Python', 'Selenium', 'BeautifulSoup', 'Requests', 'Scrapy', 'ScrapingBee'] },
   ],
   primeloop: [
-    { id: 'b-analyst', title: 'AI Analyst', body: 'A build that reads a dataset and tells you what is actually going on in it, so analysis starts from questions instead of spreadsheets.' },
-    { id: 'b-jarvis', title: 'JARVIS', body: 'A voice assistant built from scratch. Yes, named after that one. I wanted to see how far I could get building my own from nothing.', tech: ['Python', 'Whisper'] },
-    { id: 'b-support', title: 'Support tooling', body: 'A ticket viewer and an auth bridge I built to make messy support queues legible.' },
-    { id: 'b-exp', title: 'The experiments', body: 'Machine-learning notebooks, data-analysis projects, scrapers, a drawer of half-built ideas from the years before the real work.' },
+    { id: 'b-analyst', title: 'AI Analyst', body: 'An older build, and an idea I had before I had a name for it. I would show a model a small slice of a dataset, let it see the shape and the claims, and it would call for a tool by name. The tool ran, handed its result back, and the model decided what came next: clean this, run a regression, try a random forest. Standard data cleaning and machine-learning steps, driven by the model instead of by me. Tool use before I knew the word for it.', tech: ['Python', 'Gemini Flash', 'scikit-learn'] },
+    { id: 'b-exp', title: 'The experiments', body: 'Machine-learning notebooks, data-analysis projects, scrapers, a drawer of half-built ideas from the years before the real work.', tech: ['Python', 'R', 'scikit-learn', 'Selenium', 'Scrapy', 'Jupyter'] },
   ],
   outpilot: [
     { id: 'b-moto', title: 'Bike dashboard hack', body: 'My bike ships with a companion app from the manufacturer, but it is laggy and half-broken. I reverse-engineered its Bluetooth, stripped it to the frame, and rebuilt it sleek. Now my phone talks to my motorcycle properly.', tech: ['Kotlin', 'BLE'] },
+    { id: 'b-jarvis', title: 'JARVIS', body: 'A voice assistant built from scratch with a friend, running on a Raspberry Pi. Everything local: it transcribed and thought on the device, so nothing left the room. I tried a handful of local models to get it there. Not the slickest thing I have made, but the one I learned the most from. This is the version I ran while at Outpilot.', tech: ['Raspberry Pi', 'Whisper', 'local LLM'] },
   ],
 }
 
@@ -299,6 +312,7 @@ export const artById: Record<string, string> = {
   'resgov-1': 'scrape',
   'primeloop-1': 'flow',
   'primeloop-2': 'ecommerce',
+  'primeloop-5': 'flow',
   'primeloop-3': 'infra',
   'primeloop-4': 'ai',
   'outpilot-1': 'infra',
@@ -309,7 +323,6 @@ export const artById: Record<string, string> = {
   'b-scrape': 'scrape',
   'b-analyst': 'ai',
   'b-jarvis': 'voice',
-  'b-support': 'flow',
   'b-exp': 'data',
   'b-moto': 'mobile',
 }

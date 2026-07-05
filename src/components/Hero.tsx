@@ -1,8 +1,57 @@
-import { useRef } from 'react'
-import { motion, useInView, useReducedMotion } from 'motion/react'
+import { useEffect, useRef, useState } from 'react'
+import { AnimatePresence, motion, useInView, useReducedMotion } from 'motion/react'
 import { hero } from '../data'
 
 const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1]
+const BUILDS = ['outreach engines', 'order pipelines', 'voice assistants', 'self-tuning prompts', 'data scrapers']
+
+function RotatingWord() {
+  const reduce = useReducedMotion()
+  const [i, setI] = useState(0)
+  useEffect(() => {
+    if (reduce) return
+    const t = setInterval(() => setI((n) => (n + 1) % BUILDS.length), 2300)
+    return () => clearInterval(t)
+  }, [reduce])
+  return (
+    <span className="relative inline-flex overflow-hidden align-baseline">
+      <AnimatePresence mode="wait">
+        <motion.span
+          key={i}
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -10 }}
+          transition={{ duration: 0.34, ease: EASE }}
+          className="font-semibold"
+          style={{ color: 'var(--accent)' }}
+        >
+          {BUILDS[i]}
+        </motion.span>
+      </AnimatePresence>
+    </span>
+  )
+}
+
+function ScrollCue() {
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ delay: 1.1, duration: 0.9 }}
+      className="pointer-events-none absolute bottom-12 left-1/2 flex -translate-x-1/2 flex-col items-center gap-1.5"
+      style={{ color: 'var(--muted)' }}
+    >
+      <span className="font-mono text-[10px] tracking-[0.32em]">SCROLL</span>
+      <motion.svg
+        width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden
+        animate={{ y: [0, 6, 0] }}
+        transition={{ repeat: Infinity, duration: 1.7, ease: 'easeInOut' }}
+      >
+        <path d="M6 9l6 6 6-6" />
+      </motion.svg>
+    </motion.div>
+  )
+}
 
 // A small, clean chakra orb: baked radial halo + thin ring + a slowly rotating
 // conic sheen (transform only) + a core dot with a baked glow. No animated blur.
@@ -100,6 +149,19 @@ export function Hero({ theme }: { theme: 'dark' | 'light' }) {
           >
             {hero.soul}
           </motion.p>
+
+          <motion.div
+            {...rise(0.34)}
+            className="mt-7 flex items-center gap-2.5 font-mono text-[13px]"
+            style={{ color: 'var(--muted)' }}
+          >
+            <span className="relative flex h-2 w-2">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full opacity-60" style={{ background: 'var(--accent)' }} />
+              <span className="relative inline-flex h-2 w-2 rounded-full" style={{ background: 'var(--accent)' }} />
+            </span>
+            <span>lately building</span>
+            <RotatingWord />
+          </motion.div>
         </div>
 
         <motion.div
@@ -112,6 +174,7 @@ export function Hero({ theme }: { theme: 'dark' | 'light' }) {
           <ChakraOrb className="h-44 w-44 sm:h-56 sm:w-56 lg:h-64 lg:w-64" paused={!orbInView} />
         </motion.div>
       </div>
+      <ScrollCue />
     </section>
   )
 }
