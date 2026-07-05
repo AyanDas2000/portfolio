@@ -19,10 +19,10 @@ export function Clients() {
           {clients.map((c, i) => (
             <motion.div
               key={c.via}
-              initial={{ opacity: 0, y: 28 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, x: -48 }}
+              whileInView={{ opacity: 1, x: 0 }}
               viewport={VIEW}
-              transition={{ duration: 0.6, delay: i * 0.1, ease: EASE }}
+              transition={{ duration: 0.75, delay: i * 0.18, ease: EASE }}
             >
               <Glass bar className="h-full p-6">
                 <p className="font-mono text-[11px] tracking-widest" style={{ color: 'var(--accent)' }}>

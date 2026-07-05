@@ -13,10 +13,10 @@ export function Craft() {
           {craft.points.map((p, i) => (
             <motion.div
               key={i}
-              initial={{ opacity: 0, y: 34 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, x: -52 }}
+              whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: false, margin: '-8%' }}
-              transition={{ duration: 0.6, delay: i * 0.16, ease: EASE }}
+              transition={{ duration: 0.85, delay: i * 0.2, ease: EASE }}
             >
               <Glass className="h-full p-6">
                 <span className="font-mono text-2xl font-bold" style={{ color: 'var(--accent)' }}>

@@ -1,12 +1,22 @@
 import { useState } from 'react'
+import { motion } from 'motion/react'
 import { about, quotes } from '../data'
 import { Reveal } from '../lib'
 import { Glass, Section, SectionHead } from './ui'
 
+const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1]
+const VIEW = { once: false, margin: '-10%' } as const
+
 function Photo() {
   const [broken, setBroken] = useState(false)
   return (
-    <div className="relative shrink-0">
+    <motion.div
+      className="relative shrink-0"
+      initial={{ opacity: 0, scale: 0.9 }}
+      whileInView={{ opacity: 1, scale: 1 }}
+      viewport={VIEW}
+      transition={{ duration: 0.7, delay: 0.2, ease: EASE }}
+    >
       <div
         className="pointer-events-none absolute -inset-3 -z-10 rounded-[26px] opacity-60 blur-2xl"
         style={{
@@ -35,7 +45,7 @@ function Photo() {
           ayan.png
         </div>
       )}
-    </div>
+    </motion.div>
   )
 }
 
@@ -63,10 +73,20 @@ export function About() {
     <Section id="about">
       <div className="mx-auto max-w-4xl">
         <SectionHead eyebrow="ABOUT" title="How I operate" />
-        <Reveal>
+        <motion.div
+          initial={{ opacity: 0, x: -48 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={VIEW}
+          transition={{ duration: 0.8, ease: EASE }}
+        >
           <Glass bar className="mt-10 flex flex-col items-center gap-8 p-7 sm:flex-row sm:items-start sm:p-9">
             <Photo />
-            <div>
+            <motion.div
+              initial={{ opacity: 0, x: 24 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={VIEW}
+              transition={{ duration: 0.7, delay: 0.28, ease: EASE }}
+            >
               <p className="text-[15px] leading-relaxed sm:text-base" style={{ color: 'var(--muted)' }}>
                 {about.body}
               </p>
@@ -76,9 +96,9 @@ export function About() {
               >
                 {about.creed}
               </p>
-            </div>
+            </motion.div>
           </Glass>
-        </Reveal>
+        </motion.div>
       </div>
 
       <PullQuote text={quotes.main.text} author={quotes.main.author} />

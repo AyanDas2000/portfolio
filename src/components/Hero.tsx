@@ -3,7 +3,7 @@ import { AnimatePresence, motion, useInView, useReducedMotion, useScroll, useTra
 import { hero } from '../data'
 
 const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1]
-const BUILDS = ['outreach engines', 'order pipelines', 'voice assistants', 'self-tuning prompts', 'data scrapers']
+const BUILDS = ['outreach engines', 'agentic systems', 'operator dashboards', 'order pipelines']
 
 function RotatingWord() {
   const reduce = useReducedMotion()
