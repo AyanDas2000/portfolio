@@ -278,7 +278,7 @@ export const branchesByStop: Record<string, Branch[]> = {
   ],
   outpilot: [
     { id: 'b-moto', title: 'Bike dashboard hack', body: 'My bike ships with a companion app from the manufacturer, but it is laggy and half-broken. I reverse-engineered its Bluetooth, stripped it to the frame, and rebuilt it sleek. Now my phone talks to my motorcycle properly.', tech: ['Kotlin', 'BLE'] },
-    { id: 'b-jarvis', title: 'JARVIS', body: 'A voice assistant built from scratch with a friend, running on a Raspberry Pi. Everything local: it transcribed and thought on the device, so nothing left the room. I tried a handful of local models to get it there. Not the slickest thing I have made, but the one I learned the most from. This is the version I ran while at Outpilot.', tech: ['Raspberry Pi', 'local models', 'offline voice'] },
+    { id: 'b-jarvis', title: 'JARVIS', body: 'A voice assistant built from scratch with a friend, running on a Raspberry Pi. Everything local: it listened, transcribed, and answered on the device, so nothing left the room. I went through a handful of local models to get it there. Not the slickest thing I have made, but the one I learned the most from. This is the version I ran while at Outpilot.', tech: ['Raspberry Pi', 'faster-whisper', 'Porcupine', 'Piper'] },
   ],
 }
 
