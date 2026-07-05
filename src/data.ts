@@ -139,7 +139,7 @@ export const journey: Stop[] = [
         highlight: 'Well over a dozen live campaigns, booking real meetings.',
         status: 'LIVE',
         debrief:
-          'This is the half of the job people see. I run outreach campaigns end to end: the lead generation and company prospecting are mine, and I tune the prompts and the email engineering so the whole thing holds up at scale. The words come from people who write for a living; I make the machine deliver them right. Well over a dozen campaigns have gone out now, across sponsorship, partnership and B2B, for partners including Brooklyn Pickleball, Brasil Rugby and The Sponsorship Guy, alongside a run of others I cannot name and demos that some of the biggest names in sport asked us to build. A campaign that used to take a month to stand up now ships in days, and a good one books several meetings in a week. Most of the roster stays off the page.',
+          'This is the half of the job people see. I run outreach campaigns end to end: the lead generation and company prospecting are mine, and I tune the prompts and the email engineering so the whole thing holds up at scale. The words come from people who write for a living; I make the machine deliver them right. Well over a dozen campaigns have gone out now, across sponsorship, partnership and B2B, for partners including Brooklyn Pickleball, Brasil Rugby, Tomorrow City and The Sponsorship Guy, alongside a run of others I cannot name and demos that some of the biggest names in sport asked us to build. A campaign that used to take a month to stand up now ships in days, and a good one books several meetings in a week. Most of the roster stays off the page.',
       },
       {
         id: 'outpilot-3',
@@ -176,14 +176,7 @@ export const stack: { label: string; items: string[] }[] = [
   },
   {
     label: 'AI / LLMs',
-    items: [
-      'ChatGPT, Claude and Gemini direct',
-      'multi-provider via OpenRouter (Gemini, Claude, GPT, Mistral, DeepSeek, Grok)',
-      'single and multi-agent pipelines',
-      'self-tuning prompt loops',
-      'prompt caching',
-      'custom Claude Code skills',
-    ],
+    items: ['ChatGPT', 'Claude', 'Gemini', 'GPT', 'Mistral', 'DeepSeek', 'Grok', 'OpenRouter', 'multi-agent pipelines', 'self-tuning prompts', 'prompt caching', 'Claude Code skills'],
   },
   {
     label: 'Data & notebooks',
@@ -295,11 +288,11 @@ export const branchesByStop: Record<string, Branch[]> = {
 
 // Who the work reached, grouped by where I built it.
 export const clients: { via: string; note: string; names: string[] }[] = [
-  { via: 'Primeloop', note: 'Systems and automation for real businesses.', names: ['Happy Wagon'] },
+  { via: 'Primeloop', note: 'Systems and automation for real businesses.', names: ['Happy Wagon', 'Premier Intros'] },
   {
     via: 'Outpilot.ai',
     note: 'Live outreach campaigns I built and run.',
-    names: ['Brooklyn Pickleball', 'Brasil Rugby', 'The Sponsorship Guy'],
+    names: ['Brooklyn Pickleball', 'Brasil Rugby', 'Tomorrow City', 'The Sponsorship Guy'],
   },
 ]
 
