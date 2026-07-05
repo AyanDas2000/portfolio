@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { AnimatePresence, motion, useInView, useReducedMotion } from 'motion/react'
+import { AnimatePresence, motion, useInView, useReducedMotion, useScroll, useTransform } from 'motion/react'
 import { hero } from '../data'
 
 const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1]
@@ -33,13 +33,13 @@ function RotatingWord() {
 }
 
 function ScrollCue() {
+  // Fades out as soon as you start scrolling down, then it is gone.
+  const { scrollY } = useScroll()
+  const opacity = useTransform(scrollY, [0, 160], [1, 0])
   return (
     <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ delay: 1.1, duration: 0.9 }}
       className="pointer-events-none absolute bottom-12 left-1/2 flex -translate-x-1/2 flex-col items-center gap-1.5"
-      style={{ color: 'var(--muted)' }}
+      style={{ opacity, color: 'var(--muted)' }}
     >
       <span className="font-mono text-[10px] tracking-[0.32em]">SCROLL</span>
       <motion.svg

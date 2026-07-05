@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { AnimatePresence, motion } from 'motion/react'
 import { artById, type Mission, type Stop } from '../data'
 import { Chip, LiveDot, accentVar } from './ui'
@@ -110,6 +110,46 @@ function Art({ kind }: { kind: string }) {
         </>
       )
       break
+    case 'multiflow':
+      body = (
+        <>
+          {[30, 58, 86].map((y, li) => (
+            <g key={y}>
+              <line x1="34" y1={y} x2="266" y2={y} stroke={C.line} />
+              {[70, 118, 166, 214].map((x, si) => (
+                <circle key={x} cx={x} cy={y} r="3.6" fill={si <= li + 1 ? `var(--c${(li % 3) + 1})` : C.mut} opacity={si <= li + 1 ? 0.9 : 0.4} />
+              ))}
+            </g>
+          ))}
+          {[70, 118, 166, 214].map((x) => <line key={x} x1={x} y1="18" x2={x} y2="98" stroke={C.line} strokeDasharray="2 5" />)}
+          <path d="M70 30 C 96 30, 92 58, 118 58" stroke="color-mix(in srgb, var(--accent) 50%, transparent)" strokeWidth="1.4" fill="none" />
+          <path d="M118 58 C 144 58, 140 86, 166 86" stroke="color-mix(in srgb, var(--accent) 50%, transparent)" strokeWidth="1.4" fill="none" />
+          <path d="M214 86 C 238 86, 236 58, 258 58" stroke="color-mix(in srgb, var(--c3) 55%, transparent)" strokeWidth="1.4" fill="none" />
+          <circle cx="258" cy="58" r="3.6" fill={C.c3} />
+        </>
+      )
+      break
+    case 'dashboard':
+      body = (
+        <>
+          <rect x="30" y="22" width="118" height="42" rx="5" fill={C.s2} stroke={C.line} />
+          {[[42, 16, C.c1], [56, 28, C.c2], [70, 20, C.c3], [84, 34, C.c1], [98, 24, C.c2], [112, 30, C.c3]].map(([x, h, c], i) => (
+            <rect key={i} x={x as number} y={60 - (h as number)} width="7" height={h as number} rx="1.5" fill={c as string} opacity="0.85" />
+          ))}
+          <rect x="152" y="22" width="118" height="42" rx="5" fill={C.s2} stroke={C.line} />
+          <path d="M162 54 L 184 42 L 206 48 L 228 32 L 258 40" stroke={C.a} strokeWidth="1.8" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+          <rect x="30" y="72" width="55" height="36" rx="5" fill={C.s2} stroke={C.line} />
+          <path d="M40 100 a 14 14 0 0 1 28 0" stroke={C.line} strokeWidth="3" fill="none" />
+          <path d="M40 100 a 14 14 0 0 1 22 -8.5" stroke={C.c1} strokeWidth="3" fill="none" />
+          <rect x="93" y="72" width="80" height="36" rx="5" fill={C.s2} stroke={C.line} />
+          {[80, 90, 100].map((y, i) => <rect key={y} x="101" y={y} width={62 - i * 16} height="4" rx="2" fill={i === 0 ? C.a : C.mut} opacity={i === 0 ? 0.9 : 0.5} />)}
+          <rect x="181" y="72" width="89" height="36" rx="5" fill={C.s2} stroke={C.line} />
+          <circle cx="201" cy="90" r="10" fill="none" stroke={C.line} strokeWidth="3" />
+          <circle cx="201" cy="90" r="10" fill="none" stroke={C.c2} strokeWidth="3" strokeDasharray="38 30" transform="rotate(-90 201 90)" />
+          {[86, 96].map((y) => <rect key={y} x="220" y={y - 2} width="40" height="4" rx="2" fill={C.mut} opacity="0.6" />)}
+        </>
+      )
+      break
     default: // flow
       body = (
         <>
@@ -155,110 +195,39 @@ function ToolTag({ label, color }: { label: string; color: string }) {
   )
 }
 
-function Arrow({ dir }: { dir: 'left' | 'right' }) {
+// Projects shown as a responsive grid. The modal body scrolls VERTICALLY, which
+// is reliable across every browser and input device, instead of a horizontal rail
+// that fought the wheel/trackpad. No arrows, no drag hacks, nothing to get stuck.
+function TileGrid({ missions, onPick }: { missions: Mission[]; onPick: (m: Mission) => void }) {
   return (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-      {dir === 'left' ? <path d="M15 18l-6-6 6-6" /> : <path d="M9 18l6-6-6-6" />}
-    </svg>
-  )
-}
-
-// Horizontal project rail with several independent ways to scroll, so it works
-// regardless of browser or input device: a visible draggable scrollbar, clickable
-// arrow buttons, click-and-drag panning, and (via the modal body) wheel-to-side.
-function TileRow({ missions, onPick }: { missions: Mission[]; onPick: (m: Mission) => void }) {
-  const ref = useRef<HTMLDivElement>(null)
-  const [canLeft, setCanLeft] = useState(false)
-  const [canRight, setCanRight] = useState(false)
-
-  useEffect(() => {
-    const el = ref.current
-    if (!el) return
-    const update = () => {
-      setCanLeft(el.scrollLeft > 4)
-      setCanRight(el.scrollLeft + el.clientWidth < el.scrollWidth - 4)
-    }
-    update()
-    el.addEventListener('scroll', update, { passive: true })
-    window.addEventListener('resize', update)
-    return () => {
-      el.removeEventListener('scroll', update)
-      window.removeEventListener('resize', update)
-    }
-  }, [missions])
-
-  const nudge = (dx: number) => ref.current?.scrollBy({ left: dx, behavior: 'smooth' })
-
-  // Click-and-drag panning.
-  const drag = useRef({ down: false, startX: 0, startLeft: 0, moved: false })
-  const onPointerDown = (e: React.PointerEvent) => {
-    const el = ref.current
-    if (!el) return
-    drag.current = { down: true, startX: e.clientX, startLeft: el.scrollLeft, moved: false }
-  }
-  const onPointerMove = (e: React.PointerEvent) => {
-    const el = ref.current
-    if (!el || !drag.current.down) return
-    const dx = e.clientX - drag.current.startX
-    if (Math.abs(dx) > 4) drag.current.moved = true
-    el.scrollLeft = drag.current.startLeft - dx
-  }
-  const endDrag = () => { drag.current.down = false }
-
-  const arrowCls = 'absolute top-1/2 z-20 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full border shadow-md backdrop-blur transition hover:scale-105'
-  const arrowStyle = { borderColor: 'color-mix(in srgb, var(--text) 16%, transparent)', background: 'color-mix(in srgb, var(--surface) 92%, var(--text) 8%)', color: 'var(--accent)' } as const
-
-  return (
-    <div className="relative">
-      <div
-        ref={ref}
-        data-rail
-        data-lenis-prevent
-        onPointerDown={onPointerDown}
-        onPointerMove={onPointerMove}
-        onPointerUp={endDrag}
-        onPointerLeave={endDrag}
-        className="rail-scroll -mx-1 mt-3 flex cursor-grab snap-x gap-5 overflow-x-auto overscroll-contain px-1 pb-3 active:cursor-grabbing"
-      >
-        {missions.map((m, idx) => (
-          <button
-            key={m.id}
-            onClick={() => { if (!drag.current.moved) onPick(m) }}
-            className="group flex w-[248px] shrink-0 snap-start flex-col rounded-xl border p-4 text-left shadow-sm transition-all duration-200 hover:-translate-y-1 hover:shadow-lg"
-            style={{
-              borderColor: 'color-mix(in srgb, var(--text) 15%, transparent)',
-              borderLeft: `3px solid ${accentVar(idx)}`,
-              background: 'color-mix(in srgb, var(--surface) 90%, var(--text) 9%)',
-            }}
-          >
-            <ArtPanel id={m.id} />
-            <div className="mt-3 flex items-center justify-between font-mono text-[10px] tracking-widest">
-              <span style={{ color: m.status === 'LIVE' ? 'var(--accent)' : 'var(--faint)' }}>{m.status === 'LIVE' ? '● LIVE' : 'PROJECT'}</span>
-              <span className="opacity-0 transition-opacity group-hover:opacity-100" style={{ color: 'var(--accent)' }}>open →</span>
+    <div className="mt-3 grid grid-cols-1 gap-4 sm:grid-cols-2">
+      {missions.map((m, idx) => (
+        <button
+          key={m.id}
+          onClick={() => onPick(m)}
+          className="group flex flex-col rounded-xl border p-4 text-left shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg"
+          style={{
+            borderColor: 'color-mix(in srgb, var(--text) 15%, transparent)',
+            borderLeft: `3px solid ${accentVar(idx)}`,
+            background: 'color-mix(in srgb, var(--surface) 90%, var(--text) 9%)',
+          }}
+        >
+          <ArtPanel id={m.id} />
+          <div className="mt-3 flex items-center justify-between font-mono text-[10px] tracking-widest">
+            <span style={{ color: m.status === 'LIVE' ? 'var(--accent)' : 'var(--faint)' }}>{m.status === 'LIVE' ? '● LIVE' : 'PROJECT'}</span>
+            <span className="opacity-0 transition-opacity group-hover:opacity-100" style={{ color: 'var(--accent)' }}>open →</span>
+          </div>
+          <h4 className="mt-1.5 text-[15px] font-semibold leading-tight" style={{ color: 'var(--text)' }}>{m.title}</h4>
+          <p className="mt-1.5 flex-1 text-[12.5px] leading-relaxed" style={{ color: 'var(--muted)' }}>{m.highlight}</p>
+          {m.tech && (
+            <div className="mt-2.5 flex flex-wrap gap-1">
+              {m.tech.slice(0, 5).map((t, ti) => (
+                <ToolTag key={t} label={t} color={accentVar(ti)} />
+              ))}
             </div>
-            <h4 className="mt-1.5 text-[15px] font-semibold leading-tight" style={{ color: 'var(--text)' }}>{m.title}</h4>
-            <p className="mt-1.5 flex-1 text-[12.5px] leading-relaxed" style={{ color: 'var(--muted)' }}>{m.highlight}</p>
-            {m.tech && (
-              <div className="mt-2.5 flex flex-wrap gap-1">
-                {m.tech.slice(0, 4).map((t, ti) => (
-                  <ToolTag key={t} label={t} color={accentVar(ti)} />
-                ))}
-              </div>
-            )}
-          </button>
-        ))}
-      </div>
-
-      {canLeft && (
-        <button aria-label="Scroll left" onClick={() => nudge(-280)} className={`${arrowCls} left-1`} style={arrowStyle}>
-          <Arrow dir="left" />
+          )}
         </button>
-      )}
-      {canRight && (
-        <button aria-label="Scroll right" onClick={() => nudge(280)} className={`${arrowCls} right-1`} style={arrowStyle}>
-          <Arrow dir="right" />
-        </button>
-      )}
+      ))}
     </div>
   )
 }
@@ -266,7 +235,6 @@ function TileRow({ missions, onPick }: { missions: Mission[]; onPick: (m: Missio
 export function Modal({ data, onClose }: { data: ModalData | null; onClose: () => void }) {
   const [sel, setSel] = useState<Mission | null>(null)
   const [dir, setDir] = useState(1)
-  const bodyRef = useRef<HTMLDivElement>(null)
 
   const pick = (m: Mission) => { setDir(1); setSel(m) }
   const back = () => { setDir(-1); setSel(null) }
@@ -284,26 +252,6 @@ export function Modal({ data, onClose }: { data: ModalData | null; onClose: () =
       document.body.style.overflow = ''
     }
   }, [data, sel, onClose])
-
-  // One wheel handler on the whole modal body picks the axis for you: if the
-  // current view has a horizontal project rail, a plain scroll moves it sideways;
-  // otherwise the scroll falls through to the body's own vertical scroll. This
-  // fires wherever the cursor is inside the modal, so the folder rail scrolls
-  // reliably instead of only when the pointer is exactly over a card.
-  useEffect(() => {
-    if (!data) return
-    const el = bodyRef.current
-    if (!el) return
-    const onWheel = (e: WheelEvent) => {
-      const rail = el.querySelector('[data-rail]') as HTMLElement | null
-      if (!rail || rail.scrollWidth <= rail.clientWidth + 1) return // vertical view
-      if (Math.abs(e.deltaX) >= Math.abs(e.deltaY)) return // let trackpad h-swipes through
-      rail.scrollLeft += e.deltaY
-      e.preventDefault()
-    }
-    el.addEventListener('wheel', onWheel, { passive: false })
-    return () => el.removeEventListener('wheel', onWheel)
-  }, [data, sel])
 
   const viewKey = data?.kind === 'stop' ? (sel ? `d-${sel.id}` : 'folder') : 'item'
 
@@ -334,8 +282,12 @@ export function Modal({ data, onClose }: { data: ModalData | null; onClose: () =
 
             <div className="flex items-center justify-between border-b px-6 py-4" style={{ borderColor: 'var(--line)' }}>
               {data.kind === 'stop' && sel ? (
-                <button onClick={back} className="font-mono text-[11px] tracking-widest transition-opacity hover:opacity-70" style={{ color: 'var(--accent)' }}>
-                  ← back to projects
+                <button
+                  onClick={back}
+                  className="-ml-2.5 inline-flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 font-mono text-[11px] tracking-widest transition hover:bg-[color-mix(in_srgb,var(--accent)_13%,transparent)]"
+                  style={{ color: 'var(--accent)' }}
+                >
+                  <span aria-hidden className="text-[13px]">&larr;</span> back to projects
                 </button>
               ) : (
                 <span className="font-mono text-[11px] tracking-widest" style={{ color: 'var(--muted)' }}>
@@ -347,7 +299,7 @@ export function Modal({ data, onClose }: { data: ModalData | null; onClose: () =
               </button>
             </div>
 
-            <div ref={bodyRef} data-lenis-prevent className="max-h-[76vh] overflow-y-auto overscroll-contain px-6 py-6">
+            <div data-lenis-prevent className="max-h-[76vh] overflow-y-auto overscroll-contain px-6 py-6">
               <AnimatePresence mode="popLayout" initial={false}>
                 <motion.div
                   key={viewKey}
@@ -379,7 +331,7 @@ export function Modal({ data, onClose }: { data: ModalData | null; onClose: () =
                       <p className="mt-6 font-mono text-[11px] tracking-widest" style={{ color: 'var(--faint)' }}>
                         {data.stop.missions.length} PROJECT{data.stop.missions.length === 1 ? '' : 'S'}
                       </p>
-                      <TileRow missions={data.stop.missions} onPick={pick} />
+                      <TileGrid missions={data.stop.missions} onPick={pick} />
                     </>
                   )}
                 </motion.div>

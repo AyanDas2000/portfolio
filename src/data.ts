@@ -88,7 +88,7 @@ export const journey: Stop[] = [
         highlight: 'Prices tracked automatically, nothing slipping past.',
         debrief:
           'For Happy Wagon I built the pipeline that ran their e-commerce operations, and a tracker that watched Amazon for price drift and caught a moved price before a person would have. Small edges add up when you sell online.',
-        tech: ['n8n', 'Scrapy', 'AWS Lambda', 'Airtable', 'JavaScript'],
+        tech: ['n8n', 'ScrapingBee', 'AWS Lambda', 'Airtable', 'JavaScript'],
       },
       {
         id: 'primeloop-5',
@@ -112,7 +112,7 @@ export const journey: Stop[] = [
         highlight: 'The rough draft of what became my main work.',
         debrief:
           'The first time I built something that researched companies and reached out without a human driving it. It started in Make.com, moved to n8n and self-hosted infrastructure, and went through more iterations than I can count. I ran early campaigns on it too, internal and external, including one for Premier Intros. Rough at first, but it was the seed of the platform I work on now. A partnerships agency found our two-person team on the back of it, and that turned into Outpilot.',
-        tech: ['Make.com', 'n8n', 'RapidAPI', 'JavaScript'],
+        tech: ['Make.com', 'n8n', 'Gemini', 'Serper.dev', 'Firecrawl', 'Apify', 'AWS', 'RapidAPI', 'JavaScript'],
       },
     ],
   },
@@ -141,6 +141,14 @@ export const journey: Stop[] = [
         debrief:
           'This is the half of the job people see. I run outreach campaigns end to end: the lead generation and company prospecting are mine, and I tune the prompts and the email engineering so the whole thing holds up at scale. The words come from people who write for a living; I make the machine deliver them right. Well over a dozen campaigns have gone out now, across sponsorship, partnership and B2B, for partners including Brooklyn Pickleball, Brasil Rugby and The Sponsorship Guy, alongside a run of others I cannot name and demos that some of the biggest names in sport asked us to build. A campaign that used to take a month to stand up now ships in days, and a good one books several meetings in a week. Most of the roster stays off the page.',
       },
+      {
+        id: 'outpilot-3',
+        title: 'The control room',
+        highlight: 'The admin panel, dashboards and internal tools the deployed engineers run on.',
+        status: 'LIVE',
+        debrief:
+          'The engine runs, but people still have to drive it, so I built the layer they drive it from. A role-based admin panel where each deployed engineer sees and runs only the campaigns they should. An operations UI that turns a pile of moving parts into a few clear controls. Monitoring views in Grafana that show how resources are being spent in real time, and backups running quietly underneath so nothing is ever a single mistake away from gone. There are also a few cost-saving internals I built that quietly keep real money off the bill. The outbound mechanics stay behind the curtain. This is the room you would actually sit in to run it.',
+      },
     ],
   },
 ]
@@ -164,14 +172,16 @@ export const stack: { label: string; items: string[] }[] = [
   },
   {
     label: 'APIs & data',
-    items: ['REST', 'SOAP', 'webhooks', 'FastAPI', 'RapidAPI', 'Apify', 'Serper.dev', 'Parallel.ai'],
+    items: ['REST', 'SOAP', 'webhooks', 'FastAPI', 'RapidAPI', 'Apify', 'Firecrawl', 'Serper.dev', 'Parallel.ai'],
   },
   {
     label: 'AI / LLMs',
     items: [
+      'ChatGPT, Claude and Gemini direct',
       'multi-provider via OpenRouter (Gemini, Claude, GPT, Mistral, DeepSeek, Grok)',
       'single and multi-agent pipelines',
       'self-tuning prompt loops',
+      'prompt caching',
       'custom Claude Code skills',
     ],
   },
@@ -191,9 +201,10 @@ export const stack: { label: string; items: string[] }[] = [
       'PostgreSQL',
       'Airtable',
       'Shopify',
+      'Grafana',
     ],
   },
-  { label: 'Scraping', items: ['BeautifulSoup', 'Selenium', 'Scrapy', 'Requests', 'ScrapingBee', 'anti-bot handling'] },
+  { label: 'Scraping', items: ['BeautifulSoup', 'Selenium', 'Requests', 'ScrapingBee', 'anti-bot handling'] },
 ]
 
 // 7. Side Quests
@@ -270,11 +281,11 @@ export const branchesByStop: Record<string, Branch[]> = {
     { id: 'b-teach', title: 'Teaching', body: "I've tutored on the side for years, teaching people the things I once had to teach myself. It taught me that if you can't explain a thing simply, you don't really have it." },
     { id: 'b-ml', title: 'ML notebooks', body: 'Notebooks where I first pushed on machine learning, the place the math started meeting code. Python and R, run in Jupyter and Colab.', tech: ['Python', 'R', 'Jupyter', 'scikit-learn', 'pandas', 'NumPy'] },
     { id: 'b-data', title: 'Data analysis', body: 'Pulling datasets apart to find what they were actually saying, before the answer was obvious. Whatever tool fit the question, from a spreadsheet to a notebook to a dashboard.', tech: ['Excel', 'Python', 'R', 'Tableau', 'Power BI', 'Jupyter'] },
-    { id: 'b-scrape', title: 'Scraping experiments', body: 'Early scrapers and small automations. Rough, but the muscle that led to everything after.', tech: ['Python', 'Selenium', 'BeautifulSoup', 'Requests', 'Scrapy', 'ScrapingBee'] },
+    { id: 'b-scrape', title: 'Scraping experiments', body: 'Early scrapers and small automations. Rough, but the muscle that led to everything after.', tech: ['Python', 'Selenium', 'BeautifulSoup', 'Requests', 'ScrapingBee'] },
   ],
   primeloop: [
     { id: 'b-analyst', title: 'AI Analyst', body: 'An older build, and an idea I had before I had a name for it. I would show a model a small slice of a dataset, let it see the shape and the claims, and it would call for a tool by name. The tool ran, handed its result back, and the model decided what came next: clean this, run a regression, try a random forest. Standard data cleaning and machine-learning steps, driven by the model instead of by me. Tool use before I knew the word for it.', tech: ['Python', 'Gemini Flash', 'scikit-learn'] },
-    { id: 'b-exp', title: 'The experiments', body: 'Machine-learning notebooks, data-analysis projects, scrapers, a drawer of half-built ideas from the years before the real work.', tech: ['Python', 'R', 'scikit-learn', 'Selenium', 'Scrapy', 'Jupyter'] },
+    { id: 'b-exp', title: 'The experiments', body: 'Machine-learning notebooks, data-analysis projects, scrapers, a drawer of half-built ideas from the years before the real work.', tech: ['Python', 'R', 'scikit-learn', 'Selenium', 'ScrapingBee', 'Jupyter'] },
   ],
   outpilot: [
     { id: 'b-moto', title: 'Bike dashboard hack', body: 'My bike ships with a companion app from the manufacturer, but it is laggy and half-broken. I reverse-engineered its Bluetooth, stripped it to the frame, and rebuilt it sleek. Now my phone talks to my motorcycle properly.', tech: ['Kotlin', 'BLE'] },
@@ -312,11 +323,12 @@ export const artById: Record<string, string> = {
   'resgov-1': 'scrape',
   'primeloop-1': 'flow',
   'primeloop-2': 'ecommerce',
-  'primeloop-5': 'flow',
+  'primeloop-5': 'multiflow',
   'primeloop-3': 'infra',
   'primeloop-4': 'ai',
   'outpilot-1': 'infra',
   'outpilot-2': 'ai',
+  'outpilot-3': 'dashboard',
   'b-teach': 'teach',
   'b-ml': 'data',
   'b-data': 'data',
