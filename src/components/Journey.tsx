@@ -117,7 +117,7 @@ export function Journey() {
         <SectionHead
           eyebrow="THE JOURNEY"
           title="The path so far."
-          intro="Scroll to follow the line. Open a node to see the projects inside it. Side quests branch off along the way."
+          intro="Three stops in two years, newest first."
         />
       </div>
 
@@ -131,7 +131,7 @@ export function Journey() {
         </motion.div>
 
         <div className="space-y-24 sm:space-y-32">
-          {journey.map((stop, i) => (
+          {[...journey].reverse().map((stop, i) => (
             <StopRow
               key={stop.id}
               stop={stop}

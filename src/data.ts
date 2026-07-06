@@ -15,18 +15,24 @@ export const nav = [
 
 // 1. Hero + 2. Soul
 export const hero = {
-  eyebrow: 'Self-taught AI automation engineer, two years in.',
-  headline: "Give me a vague idea. I'll hand you a system that runs without me.",
+  eyebrow: 'Forward deployed AI engineer. Self-taught, two years in.',
+  headline: "Give me a business problem. I'll ship the AI system that runs it.",
   subhead:
-    "Not long ago I was proving theorems. Now I build the backend behind AI products people pay to use. A lot of it runs quietly in the background. Some of it I'm not allowed to show you.",
+    "I am an AI native builder. I live inside Claude Code, Codex and the agent stack, and I use them to get from a fuzzy problem to something running in production, fast. Two years ago I was proving theorems. Today I build and run the systems that AI products depend on, and I work directly with the people who use them.",
   soul:
     "I want to build real things with AI, with people worth betting on. If that's you, you already know where to find me.",
+  achievements: [
+    "Built a platform's core engine, hand in hand with its founder",
+    'Agentic systems running in production, not demos',
+    'Order pipelines and internal tools that teams run on daily',
+    'Pure math to production in two years, self-taught',
+  ],
 }
 
 // 3. Origin: Pure Mathematics
 export const origin = {
   title: 'Pure Mathematics',
-  body: "Before any of this, I studied pure mathematics. Group theory, topology, linear algebra, the kind of math with no obvious use until you notice it's really just a way of seeing structure everywhere. That's still how I think. I look for the shape of a problem before I touch the details, and once the structure is right, the rest tends to follow.",
+  body: "Before any of this I studied pure mathematics. It taught me to find the shape of a problem before touching the details. Once the structure is right, the rest tends to follow.",
 }
 
 export type Mission = {
@@ -155,28 +161,35 @@ export const journey: Stop[] = [
 
 // 5. How I build (Craft)
 export const craft = {
-  title: 'How I build',
+  title: 'How I work',
   points: [
-    'I self-host my automation stacks on headless servers and keep them lean and redundant. Redis to queue work across multiple workers, Docker to keep it reproducible, backups in more than one place so nothing has a single point of failure. When the big cloud bill stopped making sense, I moved to leaner infrastructure.',
-    'I work in agentic workflows natively, single-agent and multi-agent, on the cloud and increasingly from my own terminal. I build my own tooling, including a library of skills that let me run large systems from the command line.',
-    "I built a prompt loop that tunes itself. It runs, checks whether the output holds, rewrites the prompt when it doesn't, and repeats until it stops failing. How it decides what is good enough is the interesting part.",
+    {
+      head: 'Start with the problem, not the tool',
+      body: 'I sit with the actual business problem first. What needs to happen, what is in the way, and the ways it could be solved. The stack is a choice I make later, based on the need, not the other way around.',
+    },
+    {
+      head: 'Build fast, then test it hard',
+      body: 'I get to a working version quickly, then test it against the real use case again and again until it holds. What breaks tells me what to fix. AI lets me move through this loop faster than most.',
+    },
+    {
+      head: 'Deploy it tuned, for real use',
+      body: 'Then I ship it tuned for production and the people who depend on it. Self hosting, agents, whatever it takes is just the means. The point is something that keeps working after I walk away.',
+    },
   ],
 }
 
-// 6. The Stack
-export const stack: { label: string; items: string[] }[] = [
-  { label: 'Languages', items: ['Python', 'JavaScript', 'R'] },
+// 6. The Stack. `primary` = my headline AI-native stack (rendered large). `small` = a low-key strip.
+export const stack: { label: string; items: string[]; primary?: boolean; small?: boolean }[] = [
   {
-    label: 'Automation (no-code / low-code)',
-    items: ['n8n', 'Make.com', 'Zapier'],
+    label: 'My primary stack',
+    primary: true,
+    items: ['Claude Code', 'Codex', 'ChatGPT', 'Factory Droid', 'custom skills', 'agentic / multi-agent systems', 'prompt engineering', 'n8n (expert)'],
   },
+  { label: 'Languages', items: ['Python', 'JavaScript', 'R'] },
+  { label: 'Automation & integration', items: ['Make.com', 'Zapier', 'webhooks'] },
   {
     label: 'APIs & data',
-    items: ['REST', 'SOAP', 'webhooks', 'FastAPI', 'RapidAPI', 'Apify', 'Firecrawl', 'Serper.dev', 'Parallel.ai'],
-  },
-  {
-    label: 'AI / LLMs',
-    items: ['ChatGPT', 'Claude', 'Gemini', 'GPT', 'Mistral', 'DeepSeek', 'Grok', 'OpenRouter', 'multi-agent pipelines', 'self-tuning prompts', 'prompt caching', 'Claude Code skills'],
+    items: ['REST', 'SOAP', 'FastAPI', 'RapidAPI', 'Apify', 'Firecrawl', 'Serper.dev', 'Parallel.ai'],
   },
   {
     label: 'Data & notebooks',
@@ -197,7 +210,8 @@ export const stack: { label: string; items: string[] }[] = [
       'Grafana',
     ],
   },
-  { label: 'Scraping', items: ['BeautifulSoup', 'Selenium', 'Requests', 'ScrapingBee', 'anti-bot handling'] },
+  { label: 'Scraping', items: ['BeautifulSoup', 'Selenium', 'Requests', 'ScrapingBee'] },
+  { label: 'Models I reach for', small: true, items: ['Claude', 'GPT', 'Gemini', 'plus more via OpenRouter'] },
 ]
 
 // 7. Side Quests

@@ -1,4 +1,4 @@
-import { contact, links, quotes } from '../data'
+import { contact, links } from '../data'
 import { Reveal } from '../lib'
 import { Section } from './ui'
 
@@ -45,18 +45,6 @@ export function Contact() {
           </div>
         </Reveal>
       </div>
-
-      <Reveal>
-        <figure className="mx-auto mt-20 max-w-2xl">
-          <blockquote className="text-lg italic leading-relaxed" style={{ color: 'var(--muted)' }}>
-            {quotes.second.text}
-          </blockquote>
-          <figcaption className="mt-4 flex items-center justify-center gap-3 font-mono text-[12px] tracking-widest" style={{ color: 'var(--faint)' }}>
-            <span className="h-px w-8" style={{ background: 'var(--line)' }} aria-hidden />
-            {quotes.second.author}
-          </figcaption>
-        </figure>
-      </Reveal>
 
       <footer
         className="mx-auto mt-20 max-w-5xl border-t px-6 py-8 font-mono text-[11px] tracking-widest sm:px-8"

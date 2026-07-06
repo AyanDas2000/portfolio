@@ -22,8 +22,11 @@ export function Craft() {
                 <span className="font-mono text-2xl font-bold" style={{ color: 'var(--accent)' }}>
                   0{i + 1}
                 </span>
-                <p className="mt-3 text-[14px] leading-relaxed" style={{ color: 'var(--muted)' }}>
-                  {p}
+                <h3 className="mt-3 text-[15.5px] font-semibold leading-snug" style={{ color: 'var(--text)' }}>
+                  {p.head}
+                </h3>
+                <p className="mt-2 text-[13.5px] leading-relaxed" style={{ color: 'var(--muted)' }}>
+                  {p.body}
                 </p>
               </Glass>
             </motion.div>
