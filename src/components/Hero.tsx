@@ -41,12 +41,12 @@ function HeroPhoto() {
           height={440}
           decoding="async"
           onError={() => setBroken(true)}
-          className="h-72 w-60 rounded-3xl border-4 object-cover object-top sm:h-80 sm:w-64 lg:h-96 lg:w-80"
+          className="h-56 w-48 rounded-3xl border-4 object-cover object-top sm:h-80 sm:w-64 lg:h-96 lg:w-80"
           style={{ borderColor: 'var(--surface)', boxShadow: '0 40px 80px -40px rgba(0,0,0,0.6)' }}
         />
       ) : (
         <div
-          className="flex h-72 w-60 items-center justify-center rounded-3xl border font-mono text-[11px] sm:h-80 sm:w-64"
+          className="flex h-56 w-48 items-center justify-center rounded-3xl border font-mono text-[11px] sm:h-80 sm:w-64"
           style={{ borderColor: 'var(--line)', background: 'var(--surface2)', color: 'var(--faint)' }}
         >
           ayan.png
@@ -69,27 +69,27 @@ export function Hero({ theme }: { theme: 'dark' | 'light' }) {
 
   return (
     <section className="relative flex min-h-svh items-center">
-      <div className="mx-auto grid w-full max-w-5xl grid-cols-1 items-center gap-10 px-6 pb-16 pt-20 sm:px-8 sm:pb-20 sm:pt-24 md:grid-cols-[1.2fr_auto]">
-        <div>
-          <motion.p {...rise(0)} className="font-mono text-[13px] font-medium tracking-widest" style={{ color: 'var(--accent)' }}>
+      <div className="mx-auto grid w-full max-w-5xl grid-cols-1 items-center gap-8 px-6 pb-16 pt-20 sm:px-8 sm:gap-10 sm:pb-20 sm:pt-24 md:grid-cols-[1.2fr_auto]">
+        <div className="order-2 md:order-1">
+          <motion.p {...rise(0)} className="font-mono text-[12px] font-medium tracking-widest sm:text-[13px]" style={{ color: 'var(--accent)' }}>
             {hero.eyebrow}
           </motion.p>
 
           <motion.h1
             {...rise(0.08)}
-            className="mt-5 text-4xl font-bold leading-[1.08] tracking-tight sm:text-5xl lg:text-[3.35rem]"
+            className="mt-4 text-3xl font-bold leading-[1.1] tracking-tight sm:mt-5 sm:text-5xl sm:leading-[1.08] lg:text-[3.35rem]"
             style={{ color: 'var(--text)', textShadow: theme === 'dark' ? '0 0 44px rgba(120,230,255,0.16)' : 'none' }}
           >
             {hero.headline}
           </motion.h1>
 
-          <motion.p {...rise(0.18)} className="mt-6 max-w-xl text-[17px] leading-relaxed" style={{ color: 'var(--muted)' }}>
+          <motion.p {...rise(0.18)} className="mt-5 max-w-xl text-[15px] leading-relaxed sm:mt-6 sm:text-[17px]" style={{ color: 'var(--muted)' }}>
             {hero.subhead}
           </motion.p>
 
-          <motion.ul {...rise(0.26)} className="mt-7 grid max-w-xl gap-2.5">
+          <motion.ul {...rise(0.26)} className="mt-6 grid max-w-xl gap-2.5 sm:mt-7">
             {hero.achievements.map((a) => (
-              <li key={a} className="flex items-start gap-2.5 text-[14.5px]" style={{ color: 'color-mix(in srgb, var(--text) 80%, transparent)' }}>
+              <li key={a} className="flex items-start gap-2.5 text-[13.5px] sm:text-[14.5px]" style={{ color: 'color-mix(in srgb, var(--text) 80%, transparent)' }}>
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" className="mt-1 shrink-0" aria-hidden>
                   <path d="M20 6L9 17l-5-5" />
                 </svg>
@@ -111,7 +111,7 @@ export function Hero({ theme }: { theme: 'dark' | 'light' }) {
           initial={reduce ? undefined : { opacity: 0, scale: 0.92, y: 12 }}
           animate={reduce ? undefined : { opacity: 1, scale: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.15, ease: EASE }}
-          className="mx-auto"
+          className="order-1 mx-auto md:order-2"
         >
           <HeroPhoto />
         </motion.div>
