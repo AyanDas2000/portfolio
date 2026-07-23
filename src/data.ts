@@ -278,7 +278,7 @@ export const quotes = {
 export const consoleLines = [
   '> boot sequence complete. all nodes online.',
   "> you opened the console. that means you're curious, which was the whole point.",
-  '> reach me: ayan11112000@gmail.com. and for the record, the toad sage had it right.',
+  '> reach me: ayan@ayandas.dev. and for the record, the toad sage had it right.',
 ]
 
 // Side-quest branches that hang off the main path at each era.
