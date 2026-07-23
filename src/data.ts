@@ -2,7 +2,7 @@
 // Contains ZERO em or en dashes. Ranges use "to"; separators use commas.
 
 export const links = {
-  email: 'ayan11112000@gmail.com',
+  email: 'ayan@ayandas.dev',
   linkedin: 'https://www.linkedin.com/in/ayan-das-ad103/',
   x: 'https://x.com/AyanDas18189209',
 }
