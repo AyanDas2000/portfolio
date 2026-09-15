@@ -2,6 +2,11 @@
   "$schema": "./node_modules/wrangler/config-schema.json",
   "name": "portfolio",
   "compatibility_date": "2026-09-14",
+  "routes": [
+    // Serve the portfolio at the apex and www. Cloudflare manages the DNS records on deploy.
+    { "pattern": "ayandas.dev", "custom_domain": true },
+    { "pattern": "www.ayandas.dev", "custom_domain": true }
+  ],
   "assets": {
     // Unknown paths serve index.html so deep links and refreshes work.
     "directory": "./dist",
