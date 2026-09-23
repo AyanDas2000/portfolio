@@ -117,7 +117,7 @@ export const journey: Stop[] = [
         title: 'The first outreach engine',
         highlight: 'The rough draft of what became my main work.',
         debrief:
-          'The first time I built something that researched companies and reached out without a human driving it. It started in Make.com, moved to n8n and self-hosted infrastructure, and went through more iterations than I can count. I ran early campaigns on it too, internal and external, including one for Premier Intros. Rough at first, but it was the seed of the platform I work on now. A partnerships agency found our two-person team on the back of it, and that turned into Outpilot.',
+          'The first time I built something that researched companies and reached out without a human driving it. It started in Make.com, moved to n8n and self-hosted infrastructure, and went through more iterations than I can count. I ran early campaigns on it too, internal and external, including one for Premier Intros. Rough at first, but it was the seed of the platform I worked on next. A partnerships agency found our two-person team on the back of it, and that turned into Outpilot.',
         tech: ['Make.com', 'n8n', 'Gemini', 'Serper.dev', 'Firecrawl', 'Apify', 'AWS', 'RapidAPI', 'JavaScript'],
       },
     ],
@@ -126,10 +126,9 @@ export const journey: Stop[] = [
     id: 'outpilot',
     org: 'Outpilot.ai',
     role: 'Senior Forward Deployed Engineer',
-    when: '2025 to now',
+    when: '2025 to 2026',
     blurb:
-      'Outpilot is a managed service that runs different kinds of outreach: sponsorship, partnership and B2B. Two halves to what I do here.',
-    current: true,
+      'Outpilot is a managed service that runs different kinds of outreach: sponsorship, partnership and B2B. Two halves to what I did there.',
     missions: [
       {
         id: 'outpilot-1',
@@ -137,7 +136,7 @@ export const journey: Stop[] = [
         highlight: 'The scaling infrastructure the whole team runs on.',
         status: 'LIVE',
         debrief:
-          'This one I built hand in hand with our founder. He set the vision and the direction, and I designed and built the architecture that makes it real, the infrastructure, the workflows, the way it holds together at scale. It is the framework a set of deployed engineers, me included, use to run personalized outreach with precision. How it works inside stays with the company. That it works is the part I can show you.',
+          'This one I built hand in hand with our founder. He set the vision and the direction, and I designed and built the architecture that makes it real, the infrastructure, the workflows, the way it holds together at scale. It is the framework a set of deployed engineers, me included, used to run personalized outreach with precision. How it works inside stays with the company. That it works is the part I can show you.',
       },
       {
         id: 'outpilot-2',
@@ -145,7 +144,7 @@ export const journey: Stop[] = [
         highlight: 'Well over a dozen live campaigns, booking real meetings.',
         status: 'LIVE',
         debrief:
-          'This is the half of the job people see. I run outreach campaigns end to end: the lead generation and company prospecting are mine, and I tune the prompts and the email engineering so the whole thing holds up at scale. The words come from people who write for a living; I make the machine deliver them right. Well over a dozen campaigns have gone out now, across sponsorship, partnership and B2B, for partners including Brooklyn Pickleball, Brasil Rugby, Tomorrow City and The Sponsorship Guy, alongside a run of others I cannot name and demos that some of the biggest names in sport asked us to build. A campaign that used to take a month to stand up now ships in days, and a good one books several meetings in a week. Most of the roster stays off the page.',
+          'This is the half of the job people see. I ran outreach campaigns end to end: the lead generation and company prospecting were mine, and I tuned the prompts and the email engineering so the whole thing holds up at scale. The words come from people who write for a living; I made the machine deliver them right. Well over a dozen campaigns have gone out now, across sponsorship, partnership and B2B, for partners including Brooklyn Pickleball, Brasil Rugby, Tomorrow City and The Sponsorship Guy, alongside a run of others I cannot name and demos that some of the biggest names in sport asked us to build. A campaign that used to take a month to stand up now ships in days, and a good one books several meetings in a week. Most of the roster stays off the page.',
       },
       {
         id: 'outpilot-3',
@@ -305,7 +304,7 @@ export const clients: { via: string; note: string; names: string[] }[] = [
   { via: 'Primeloop', note: 'Systems and automation for real businesses.', names: ['Happy Wagon', 'Premier Intros'] },
   {
     via: 'Outpilot.ai',
-    note: 'Live outreach campaigns I built and run.',
+    note: 'Live outreach campaigns I built and ran.',
     names: ['Brooklyn Pickleball', 'Brasil Rugby', 'Tomorrow City', 'The Sponsorship Guy'],
   },
 ]
