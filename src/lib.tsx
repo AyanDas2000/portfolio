@@ -1,4 +1,4 @@
-import { useEffect, useState, type ReactNode } from 'react'
+import { useEffect, useLayoutEffect, useState, type ReactNode } from 'react'
 import { motion, useReducedMotion } from 'motion/react'
 
 export function cn(...parts: Array<string | false | null | undefined>) {
@@ -56,11 +56,16 @@ export function useActiveSection(ids: string[]) {
 type Theme = 'dark' | 'light'
 
 export function useTheme(): [Theme, () => void] {
-  const [theme, setTheme] = useState<Theme>(() => {
-    if (typeof document === 'undefined') return 'light'
-    return (document.documentElement.getAttribute('data-theme') as Theme) || 'light'
-  })
+  // Start as 'light' on both server and client so hydration matches the prerendered
+  // HTML, then adopt the theme the inline script in index.html already applied.
+  const [theme, setTheme] = useState<Theme>('light')
+  const [synced, setSynced] = useState(false)
+  useLayoutEffect(() => {
+    if (document.documentElement.getAttribute('data-theme') === 'dark') setTheme('dark')
+    setSynced(true)
+  }, [])
   useEffect(() => {
+    if (!synced) return
     document.documentElement.setAttribute('data-theme', theme)
     document.documentElement.style.setProperty('color-scheme', theme)
     try {
@@ -68,6 +73,6 @@ export function useTheme(): [Theme, () => void] {
     } catch {
       /* ignore */
     }
-  }, [theme])
+  }, [theme, synced])
   return [theme, () => setTheme((t) => (t === 'dark' ? 'light' : 'dark'))]
 }

@@ -35,11 +35,11 @@ function HeroPhoto() {
       />
       {!broken ? (
         <img
-          src="/ayan.png"
+          src="/ayan.webp"
           alt="Ayan Das"
           width={360}
           height={440}
-          decoding="async"
+          fetchPriority="high"
           onError={() => setBroken(true)}
           className="h-56 w-48 rounded-3xl border-4 object-cover object-top sm:h-80 sm:w-64 lg:h-96 lg:w-80"
           style={{ borderColor: 'var(--surface)', boxShadow: '0 40px 80px -40px rgba(0,0,0,0.6)' }}

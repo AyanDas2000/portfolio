@@ -27,7 +27,7 @@ function Photo() {
       />
       {!broken ? (
         <img
-          src="/ayan.png"
+          src="/ayan.webp"
           alt="Ayan Das"
           width={320}
           height={320}

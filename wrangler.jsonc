@@ -8,9 +8,9 @@
     { "pattern": "www.ayandas.dev", "custom_domain": true }
   ],
   "assets": {
-    // Unknown paths serve index.html so deep links and refreshes work.
+    // One-page site with no client routes: unknown paths get a real 404, not a soft-404 copy of the homepage.
     "directory": "./dist",
-    "not_found_handling": "single-page-application"
+    "not_found_handling": "404-page"
   },
   "workers_dev": true,
   "preview_urls": true
