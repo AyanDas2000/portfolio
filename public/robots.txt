@@ -1,4 +1,7 @@
+# Content signals (contentsignals.org): appear in search and AI answers, no model training.
+# Matches the Cloudflare AI bot policy: Search allow, Agent allow, Training disallow.
 User-agent: *
+Content-Signal: search=yes, ai-input=yes, ai-train=no
 Allow: /
 
 Sitemap: https://ayandas.dev/sitemap.xml
